@@ -21,7 +21,7 @@
     android:orientation="horizontal"
     android:background="@color/mdtp_background_color"
     android:focusable="true" >
-    <com.wdullaer.materialdatetimepicker.time.RadialPickerLayout
+    <com.adedom.library.time.RadialPickerLayout
         android:id="@+id/time_picker"
         android:layout_width="@dimen/mdtp_picker_dimen"
         android:layout_height="@dimen/mdtp_time_picker_height"
@@ -48,7 +48,7 @@
             android:background="@color/mdtp_accent_color_dark"/>
         <FrameLayout
             android:id="@+id/time_display_background"
-            android:layout_width="@dimen/mdtp_left_side_width"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@color/mdtp_accent_color" >
