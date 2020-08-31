@@ -4,7 +4,6 @@ import android.content.Context
 import com.adedom.library.date.DatePickerController
 import com.adedom.library.date.MonthAdapter
 import com.adedom.library.date.MonthView
-import com.adedom.library.date.SimpleMonthView
 
 class SimpleMonthAdapter(
     context: Context?, controller: DatePickerController?
