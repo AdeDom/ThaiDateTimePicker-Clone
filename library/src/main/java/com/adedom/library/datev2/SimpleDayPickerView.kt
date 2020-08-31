@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import com.adedom.library.date.DatePickerController
 import com.adedom.library.date.DayPickerView
 import com.adedom.library.date.MonthAdapter
-import com.adedom.library.date.SimpleMonthAdapter
 
 class SimpleDayPickerView : DayPickerView {
 
