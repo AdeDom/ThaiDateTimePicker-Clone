@@ -23,7 +23,6 @@ import com.adedom.library.date.DatePickerController
 import com.adedom.library.date.DayPickerView
 import com.adedom.library.date.MonthAdapter.CalendarDay
 import com.adedom.library.date.SimpleDayPickerView
-import com.adedom.library.date.YearPickerView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -118,7 +117,7 @@ class DatePickerDialog : DialogFragment(), View.OnClickListener, DatePickerContr
             listPosition = mDayPickerView.mostVisiblePosition
         } else if (mCurrentView == YEAR_VIEW) {
             listPosition = mYearPickerView.firstVisiblePosition
-            outState.putInt(KEY_LIST_POSITION_OFFSET, mYearPickerView.firstPositionOffset)
+            outState.putInt(KEY_LIST_POSITION_OFFSET, mYearPickerView.getFirstPositionOffset())
         }
         outState.putInt(KEY_LIST_POSITION, listPosition)
         outState.putSerializable(KEY_MIN_DATE, mMinDate)
@@ -177,7 +176,8 @@ class DatePickerDialog : DialogFragment(), View.OnClickListener, DatePickerContr
 
         val activity: Activity? = activity
         mDayPickerView = SimpleDayPickerView(activity, this)
-        mYearPickerView = YearPickerView(activity, this)
+        if (activity != null)
+            mYearPickerView = YearPickerView(activity, this)
 
         val res = resources
         mDayPickerDescription = res.getString(R.string.mdtp_day_picker_description)
