@@ -22,7 +22,6 @@ import com.adedom.library.date.AccessibleDateAnimator
 import com.adedom.library.date.DatePickerController
 import com.adedom.library.date.DayPickerView
 import com.adedom.library.date.MonthAdapter.CalendarDay
-import com.adedom.library.date.SimpleDayPickerView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
