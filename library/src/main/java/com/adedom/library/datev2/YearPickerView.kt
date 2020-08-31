@@ -13,7 +13,6 @@ import android.widget.TextView
 import com.adedom.library.R
 import com.adedom.library.date.DatePickerController
 import com.adedom.library.date.DatePickerDialog
-import com.adedom.library.date.TextViewWithCircularIndicator
 import java.util.*
 
 class YearPickerView(
