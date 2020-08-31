@@ -18,7 +18,6 @@ import com.adedom.library.HapticFeedbackController
 import com.adedom.library.R
 import com.adedom.library.TypefaceHelper
 import com.adedom.library.Utils
-import com.adedom.library.date.AccessibleDateAnimator
 import com.adedom.library.date.DatePickerController
 import com.adedom.library.date.DayPickerView
 import com.adedom.library.date.MonthAdapter.CalendarDay
