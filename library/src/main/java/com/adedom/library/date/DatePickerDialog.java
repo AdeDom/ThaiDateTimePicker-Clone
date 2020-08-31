@@ -134,7 +134,7 @@ public class DatePickerDialog extends DialogFragment implements
      * The callback used to indicate the user is done filling in the date.
      */
     public interface OnDateSetListener {
-        void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth);
+        void onDateSet(DialogFragment view, int year, int monthOfYear, int dayOfMonth);
     }
 
     /**
