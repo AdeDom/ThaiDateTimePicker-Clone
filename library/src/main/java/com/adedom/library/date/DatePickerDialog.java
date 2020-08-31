@@ -134,7 +134,7 @@ public class DatePickerDialog extends DialogFragment implements
      * The callback used to indicate the user is done filling in the date.
      */
     public interface OnDateSetListener {
-        void onDateSet(String date);
+        void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth);
     }
 
     /**
@@ -150,12 +150,10 @@ public class DatePickerDialog extends DialogFragment implements
         // Empty constructor required for dialog fragment.
     }
 
-    public static DatePickerDialog newInstance(OnDateSetListener callBack) {
+    public static DatePickerDialog newInstance(OnDateSetListener callBack, int year,
+                                               int monthOfYear,
+                                               int dayOfMonth) {
         DatePickerDialog ret = new DatePickerDialog();
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int monthOfYear = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         ret.initialize(callBack, year, monthOfYear, dayOfMonth);
         return ret;
     }
@@ -282,10 +280,8 @@ public class DatePickerDialog extends DialogFragment implements
             public void onClick(View v) {
                 tryVibrate();
                 if (mCallBack != null) {
-                    String date = "" + mCalendar.get(Calendar.DAY_OF_MONTH) +
-                            "/" + (mCalendar.get(Calendar.MONTH) + 1) +
-                            "/" + mCalendar.get(Calendar.YEAR);
-                    mCallBack.onDateSet(date);
+                    mCallBack.onDateSet(DatePickerDialog.this, mCalendar.get(Calendar.YEAR),
+                            mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
                 }
                 dismiss();
             }
