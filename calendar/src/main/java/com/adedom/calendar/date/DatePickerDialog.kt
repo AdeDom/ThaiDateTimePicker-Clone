@@ -18,7 +18,6 @@ import com.adedom.calendar.TypefaceHelper
 import com.adedom.calendar.Utils
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.abs
 
 class DatePickerDialog : DialogFragment(), DatePickerController {
 
@@ -37,8 +36,6 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     private var mCurrentView = UNINITIALIZED
 
-    private lateinit var highlightedDays: Array<Calendar>
-    private lateinit var selectableDays: Array<Calendar>
     private var mAccentColor = -1
 
     private var mHapticFeedbackController: HapticFeedbackController? = null
@@ -238,19 +235,9 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     override fun getAccentColor() = mAccentColor
 
-    fun setHighlightedDays(highlightedDays: Array<Calendar>) {
-        Arrays.sort(highlightedDays)
-        this.highlightedDays = highlightedDays
-    }
+    override fun getHighlightedDays() = arrayOf(Calendar.getInstance())
 
-    override fun getHighlightedDays() = highlightedDays
-
-    fun setSelectableDays(selectableDays: Array<Calendar>) {
-        Arrays.sort(selectableDays)
-        this.selectableDays = selectableDays
-    }
-
-    override fun getSelectableDays() = selectableDays
+    override fun getSelectableDays() = arrayOf(Calendar.getInstance())
 
     override fun onYearSelected(year: Int) {
         mCalendar[Calendar.YEAR] = year
@@ -271,9 +258,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         for (listener in mListeners) listener.onDateChanged()
     }
 
-    override fun getSelectedDay(): MonthAdapter.CalendarDay {
-        return MonthAdapter.CalendarDay(mCalendar)
-    }
+    override fun getSelectedDay()= MonthAdapter.CalendarDay(mCalendar)
 
     override fun getMinYear() = DEFAULT_START_YEAR
 
@@ -304,7 +289,6 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         private val YEAR_FORMAT = SimpleDateFormat("yyyy", Locale.getDefault())
         private val MONTH_FORMAT = SimpleDateFormat("MMMM", Locale.getDefault())
-        private val DAY_FORMAT = SimpleDateFormat("dd", Locale.getDefault())
         private val FULL_DATE_FORMAT = SimpleDateFormat("E, dd MMMM yyyy", Locale.getDefault())
 
         fun newInstance(
