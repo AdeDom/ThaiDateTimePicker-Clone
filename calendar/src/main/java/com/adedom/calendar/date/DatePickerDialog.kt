@@ -28,6 +28,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     private lateinit var mAnimator: AccessibleDateAnimator
 
+    private lateinit var mTvFullDate: TextView
     private lateinit var mMonthAndDayView: LinearLayout
     private lateinit var mSelectedMonthTextView: TextView
     private lateinit var mYearView: TextView
@@ -36,11 +37,6 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     private var mCurrentView = UNINITIALIZED
 
-    private var mWeekStart = mCalendar.firstDayOfWeek
-    private var mMinYear = DEFAULT_START_YEAR
-    private var mMaxYear = DEFAULT_END_YEAR
-    private lateinit var mMinDate: Calendar
-    private lateinit var mMaxDate: Calendar
     private lateinit var highlightedDays: Array<Calendar>
     private lateinit var selectableDays: Array<Calendar>
     private var mAccentColor = -1
@@ -91,14 +87,13 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         val view: View = inflater.inflate(R.layout.calendar_date_picker_dialog, container)
 
+        mTvFullDate = view.findViewById(R.id.tv_full_date) as TextView
         mMonthAndDayView = view.findViewById<View>(R.id.date_picker_month_and_day) as LinearLayout
         mSelectedMonthTextView = view.findViewById<View>(R.id.date_picker_month) as TextView
         mYearView = view.findViewById<View>(R.id.date_picker_year) as TextView
 
         mYearView.setOnClickListener { setCurrentView(YEAR_VIEW) }
         mMonthAndDayView.setOnClickListener { setCurrentView(MONTH_AND_DAY_VIEW) }
-
-        var listPosition = -1
 
         val activity: Activity? = activity
         mDayPickerView = SimpleDayPickerView(activity, this)
@@ -155,10 +150,6 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         updateDisplay(false)
         setCurrentView(MONTH_AND_DAY_VIEW)
-
-        if (listPosition != -1) {
-            mDayPickerView.postSetSelection(listPosition)
-        }
 
         mHapticFeedbackController = activity?.let { HapticFeedbackController(it) }
         return view
@@ -223,10 +214,8 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     }
 
     private fun updateDisplay(announce: Boolean) {
-        mSelectedMonthTextView.text = mCalendar.getDisplayName(
-            Calendar.MONTH, Calendar.SHORT,
-            Locale.getDefault()
-        )?.toUpperCase(Locale.getDefault())
+        mTvFullDate.text = FULL_DATE_FORMAT.format(mCalendar.time)
+        mSelectedMonthTextView.text = MONTH_FORMAT.format(mCalendar.time)
         mYearView.text = YEAR_FORMAT.format(mCalendar.time)
 
         // Accessibility.
@@ -263,18 +252,8 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     override fun getSelectableDays() = selectableDays
 
-    private fun adjustDayInMonthIfNeeded(calendar: Calendar) {
-        val day = calendar[Calendar.DAY_OF_MONTH]
-        val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        if (day > daysInMonth) {
-            calendar[Calendar.DAY_OF_MONTH] = daysInMonth
-        }
-        setToNearestDate(calendar)
-    }
-
     override fun onYearSelected(year: Int) {
         mCalendar[Calendar.YEAR] = year
-        adjustDayInMonthIfNeeded(mCalendar)
         updatePickers()
         setCurrentView(MONTH_AND_DAY_VIEW)
         updateDisplay(true)
@@ -296,102 +275,13 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         return MonthAdapter.CalendarDay(mCalendar)
     }
 
-    override fun getMinYear(): Int {
-        if (selectableDays != null) return selectableDays[0][Calendar.YEAR]
-        // Ensure no years can be selected outside of the given minimum date
-        return if (mMinDate[Calendar.YEAR] > mMinYear) mMinDate[Calendar.YEAR] else mMinYear
-    }
+    override fun getMinYear() = DEFAULT_START_YEAR
 
-    override fun getMaxYear(): Int {
-        if (selectableDays != null)
-            return selectableDays[selectableDays.size - 1][Calendar.YEAR]
-        // Ensure no years can be selected outside of the given maximum date
-        return if (mMaxDate[Calendar.YEAR] < mMaxYear) mMaxDate[Calendar.YEAR] else mMaxYear
-    }
+    override fun getMaxYear() = DEFAULT_END_YEAR
 
     override fun isOutOfRange(year: Int, month: Int, day: Int) = false
 
-    private fun isBeforeMin(year: Int, month: Int, day: Int): Boolean {
-        if (year < mMinDate[Calendar.YEAR]) {
-            return true
-        } else if (year > mMinDate[Calendar.YEAR]) {
-            return false
-        }
-
-        if (month < mMinDate[Calendar.MONTH]) {
-            return true
-        } else if (month > mMinDate[Calendar.MONTH]) {
-            return false
-        }
-
-        return if (day < mMinDate[Calendar.DAY_OF_MONTH]) {
-            true
-        } else {
-            false
-        }
-    }
-
-    private fun isBeforeMin(calendar: Calendar): Boolean {
-        return isBeforeMin(
-            calendar[Calendar.YEAR],
-            calendar[Calendar.MONTH],
-            calendar[Calendar.DAY_OF_MONTH]
-        )
-    }
-
-    private fun isAfterMax(year: Int, month: Int, day: Int): Boolean {
-        if (year > mMaxDate[Calendar.YEAR]) {
-            return true
-        } else if (year < mMaxDate[Calendar.YEAR]) {
-            return false
-        }
-
-        if (month > mMaxDate[Calendar.MONTH]) {
-            return true
-        } else if (month < mMaxDate[Calendar.MONTH]) {
-            return false
-        }
-
-        return if (day > mMaxDate[Calendar.DAY_OF_MONTH]) {
-            true
-        } else {
-            false
-        }
-    }
-
-    private fun isAfterMax(calendar: Calendar): Boolean {
-        return isAfterMax(
-            calendar[Calendar.YEAR],
-            calendar[Calendar.MONTH],
-            calendar[Calendar.DAY_OF_MONTH]
-        )
-    }
-
-    private fun setToNearestDate(calendar: Calendar) {
-        if (selectableDays != null) {
-            var distance = Int.MAX_VALUE
-            for (c in selectableDays) {
-                val newDistance = abs(calendar.compareTo(c))
-                if (newDistance < distance) distance = newDistance else {
-                    calendar.timeInMillis = c.timeInMillis
-                    break
-                }
-            }
-            return
-        }
-
-        if (isBeforeMin(calendar)) {
-            calendar.timeInMillis = mMinDate.timeInMillis
-            return
-        }
-
-        if (isAfterMax(calendar)) {
-            calendar.timeInMillis = mMaxDate.timeInMillis
-            return
-        }
-    }
-
-    override fun getFirstDayOfWeek() = mWeekStart
+    override fun getFirstDayOfWeek() = mCalendar.firstDayOfWeek
 
     override fun registerOnDateChangedListener(listener: OnDateChangedListener) {
         mListeners.add(listener)
@@ -413,7 +303,9 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         private const val ANIMATION_DELAY = 500
 
         private val YEAR_FORMAT = SimpleDateFormat("yyyy", Locale.getDefault())
+        private val MONTH_FORMAT = SimpleDateFormat("MMMM", Locale.getDefault())
         private val DAY_FORMAT = SimpleDateFormat("dd", Locale.getDefault())
+        private val FULL_DATE_FORMAT = SimpleDateFormat("E, dd MMMM yyyy", Locale.getDefault())
 
         fun newInstance(
             callback: OnDateSetListener,

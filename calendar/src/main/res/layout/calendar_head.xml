@@ -9,7 +9,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.adedom.calendar.AccessibleTextView
+    <TextView
         android:id="@+id/date_picker_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textSize="@dimen/mdtp_selected_date_year_size"
         tools:text="2015" />
 
-    <com.adedom.calendar.AccessibleLinearLayout
+    <LinearLayout
         android:id="@+id/date_picker_month_and_day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,6 +40,6 @@
             android:textSize="@dimen/mdtp_selected_date_month_size"
             tools:text="May"/>
 
-    </com.adedom.calendar.AccessibleLinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
