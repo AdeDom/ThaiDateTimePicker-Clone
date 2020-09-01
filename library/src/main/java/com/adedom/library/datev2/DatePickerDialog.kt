@@ -15,12 +15,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.adedom.library.R
-import com.adedom.library.TypefaceHelper
 import com.adedom.library.Utils
 import com.adedom.library.date.DatePickerController
 import com.adedom.library.date.DayPickerView
 import com.adedom.library.date.MonthAdapter.CalendarDay
 import com.adedom.library.util.HapticFeedbackController
+import com.adedom.library.util.TypefaceHelper
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -210,14 +210,14 @@ class DatePickerDialog : DialogFragment(), View.OnClickListener, DatePickerContr
             )
             dismiss()
         }
-        okButton.typeface = TypefaceHelper.get(activity, "Roboto-Medium")
+        okButton.typeface = TypefaceHelper[activity, "Roboto-Medium"]
 
         val cancelButton = view.findViewById<View>(R.id.cancel) as Button
         cancelButton.setOnClickListener {
             tryVibrate()
             if (dialog != null) dialog?.cancel()
         }
-        cancelButton.typeface = TypefaceHelper.get(activity, "Roboto-Medium")
+        cancelButton.typeface = TypefaceHelper[activity, "Roboto-Medium"]
         cancelButton.visibility = if (isCancelable) View.VISIBLE else View.GONE
 
         // If an accent color has not been set manually, get it from the context
