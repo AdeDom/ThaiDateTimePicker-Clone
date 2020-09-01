@@ -15,12 +15,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.adedom.library.R
-import com.adedom.library.Utils
 import com.adedom.library.date.DatePickerController
 import com.adedom.library.date.DayPickerView
 import com.adedom.library.date.MonthAdapter.CalendarDay
 import com.adedom.library.util.HapticFeedbackController
 import com.adedom.library.util.TypefaceHelper
+import com.adedom.library.util.Utils
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -222,7 +222,7 @@ class DatePickerDialog : DialogFragment(), View.OnClickListener, DatePickerContr
 
         // If an accent color has not been set manually, get it from the context
         if (mAccentColor == -1) {
-            mAccentColor = Utils.getAccentColorFromThemeIfAvailable(getActivity())
+            mAccentColor = getActivity()?.let { Utils.getAccentColorFromThemeIfAvailable(it) } ?: 0
         }
         view.findViewById<View>(R.id.day_picker_selected_date_layout)
             .setBackgroundColor(mAccentColor)
