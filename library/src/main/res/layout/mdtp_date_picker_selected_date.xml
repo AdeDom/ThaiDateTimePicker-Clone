@@ -25,7 +25,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.adedom.library.AccessibleLinearLayout
+    <com.adedom.library.util.AccessibleLinearLayout
         android:id="@+id/date_picker_month_and_day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:textColor="@color/mdtp_date_picker_selector"
             android:textSize="@dimen/mdtp_selected_date_day_size"
             tools:text="15"/>
-    </com.adedom.library.AccessibleLinearLayout>
+    </com.adedom.library.util.AccessibleLinearLayout>
 
     <com.adedom.library.AccessibleTextView
         android:id="@+id/date_picker_year"
