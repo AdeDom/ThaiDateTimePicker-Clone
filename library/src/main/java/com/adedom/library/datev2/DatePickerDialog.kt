@@ -14,13 +14,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.adedom.library.HapticFeedbackController
 import com.adedom.library.R
 import com.adedom.library.TypefaceHelper
 import com.adedom.library.Utils
 import com.adedom.library.date.DatePickerController
 import com.adedom.library.date.DayPickerView
 import com.adedom.library.date.MonthAdapter.CalendarDay
+import com.adedom.library.util.HapticFeedbackController
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -58,7 +58,7 @@ class DatePickerDialog : DialogFragment(), View.OnClickListener, DatePickerContr
     private var mDismissOnPause = false
     private var mDefaultView = MONTH_AND_DAY_VIEW
 
-    private lateinit var mHapticFeedbackController: HapticFeedbackController
+    private var mHapticFeedbackController: HapticFeedbackController? = null
 
     private var mDelayAnimation = true
 
@@ -240,18 +240,18 @@ class DatePickerDialog : DialogFragment(), View.OnClickListener, DatePickerContr
             }
         }
 
-        mHapticFeedbackController = HapticFeedbackController(activity)
+        mHapticFeedbackController = activity?.let { HapticFeedbackController(it) }
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        mHapticFeedbackController.start()
+        mHapticFeedbackController?.start()
     }
 
     override fun onPause() {
         super.onPause()
-        mHapticFeedbackController.stop()
+        mHapticFeedbackController?.stop()
         if (mDismissOnPause) dismiss()
     }
 
@@ -613,7 +613,7 @@ class DatePickerDialog : DialogFragment(), View.OnClickListener, DatePickerContr
     }
 
     override fun tryVibrate() {
-        if (mVibrate) mHapticFeedbackController.tryVibrate()
+        if (mVibrate) mHapticFeedbackController?.tryVibrate()
     }
 
     companion object {
