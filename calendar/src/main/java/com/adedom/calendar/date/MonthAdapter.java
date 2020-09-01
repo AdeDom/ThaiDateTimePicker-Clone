@@ -218,7 +218,6 @@ public abstract class MonthAdapter extends BaseAdapter implements MonthView.OnDa
      * @param day The day that was tapped
      */
     protected void onDayTapped(CalendarDay day) {
-        mController.tryVibrate();
         mController.onDayOfMonthSelected(day.year, day.month, day.day);
         setSelectedDay(day);
     }

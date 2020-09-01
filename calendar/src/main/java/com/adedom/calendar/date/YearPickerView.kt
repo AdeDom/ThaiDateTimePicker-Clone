@@ -30,12 +30,11 @@ class YearPickerView(
         for (year in mController.getMinYear()..mController.getMaxYear()) {
             years.add(String.format("%d", year))
         }
-        mAdapter = YearAdapter(context, R.layout.mdtp_year_label_text_view, years)
+        mAdapter = YearAdapter(context, R.layout.calendar_year, years)
         adapter = mAdapter
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, p2: Int, p3: Long) {
-        mController.tryVibrate()
         val clickedView = view as TextViewWithCircularIndicator
         if (clickedView != mSelectedView) {
             if (mSelectedView != null) {
@@ -69,7 +68,7 @@ class YearPickerView(
 
     }
 
-    fun postSetSelectionCentered(position: Int) {
+    private fun postSetSelectionCentered(position: Int) {
         postSetSelectionFromTop(position, mViewSize / 2 - mChildSize / 2)
     }
 
@@ -99,9 +98,6 @@ class YearPickerView(
     }
 
     companion object {
-
-        private const val TAG = "YearPickerView"
-
         private fun getYearFromTextView(view: TextView): Int {
             return Integer.valueOf(view.text.toString())
         }

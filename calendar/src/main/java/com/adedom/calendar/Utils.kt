@@ -5,8 +5,6 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.Color
 import android.os.Build
 import android.util.TypedValue
 import android.view.View
@@ -15,14 +13,9 @@ import androidx.core.content.ContextCompat
 class Utils {
 
     companion object {
-        const val PULSE_ANIMATOR_DURATION = 544
+        private const val PULSE_ANIMATOR_DURATION = 544
 
-        const val SELECTED_ALPHA = 255
-        const val SELECTED_ALPHA_THEME_DARK = 255
-
-        const val FULL_ALPHA = 255
-
-        fun isJellybeanOrLater(): Boolean {
+        private fun isJellybeanOrLater(): Boolean {
             return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
         }
 
@@ -49,22 +42,6 @@ class Utils {
                 ObjectAnimator.ofPropertyValuesHolder(labelToAnimate, scaleX, scaleY)
             pulseAnimator.duration = PULSE_ANIMATOR_DURATION.toLong()
             return pulseAnimator
-        }
-
-        fun dpToPx(dp: Float, resources: Resources): Int {
-            val px = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                resources.displayMetrics
-            )
-            return px.toInt()
-        }
-
-        fun darkenColor(color: Int): Int {
-            val hsv = FloatArray(3)
-            Color.colorToHSV(color, hsv)
-            hsv[2] = hsv[2] * 0.8f
-            return Color.HSVToColor(hsv)
         }
 
         fun getAccentColorFromThemeIfAvailable(context: Context): Int {
