@@ -50,7 +50,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     private lateinit var mSelectYear: String
 
     interface OnDateSetListener {
-        fun onDateSet(view: DatePickerDialog, year: Int, monthOfYear: Int, dayOfMonth: Int)
+        fun onDateSet(date: String)
     }
 
     interface OnDateChangedListener {
@@ -98,7 +98,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         val activity: Activity? = activity
         mDayPickerView = SimpleDayPickerView(activity, this)
         if (activity != null)
-            mYearPickerView = YearPickerView(activity, this)
+            mYearPickerView = YearPickerView(activity, this, mLocale)
 
         val res = resources
         mDayPickerDescription = res.getString(R.string.mdtp_day_picker_description)
@@ -125,10 +125,16 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         val okButton = view.findViewById<View>(R.id.ok) as Button
         okButton.setOnClickListener {
-            mCallBack.onDateSet(
-                this@DatePickerDialog, mCalendar[Calendar.YEAR],
-                mCalendar[Calendar.MONTH], mCalendar[Calendar.DAY_OF_MONTH]
-            )
+            val date = if (mLocale == LOCALE_TH) {
+                "${mCalendar[Calendar.DAY_OF_MONTH]}/" +
+                        "${mCalendar[Calendar.MONTH].plus(1)}/" +
+                        "${mCalendar[Calendar.YEAR].plus(BUDDHIST_OFFSET)}"
+            } else {
+                "${mCalendar[Calendar.DAY_OF_MONTH]}/" +
+                        "${mCalendar[Calendar.MONTH].plus(1)}/" +
+                        "${mCalendar[Calendar.YEAR]}"
+            }
+            mCallBack.onDateSet(date)
             dismiss()
         }
         okButton.typeface = TypefaceHelper[activity, "Roboto-Medium"]
@@ -214,9 +220,13 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     }
 
     private fun updateDisplay(announce: Boolean) {
-        mTvFullDate.text = SimpleDateFormat(FULL_DATE_FORMAT, mLocale).format(mCalendar.time)
+        val year = SimpleDateFormat(YEAR_FORMAT, mLocale).format(mCalendar.time).toInt()
+        val localeYear = if (mLocale == LOCALE_TH) year.plus(BUDDHIST_OFFSET) else year
+        val fullDate = SimpleDateFormat(FULL_DATE_FORMAT, mLocale).format(mCalendar.time)
+            .replace(".", "") + localeYear.toString()
+        mTvFullDate.text = fullDate
         mSelectedMonthTextView.text = SimpleDateFormat(MONTH_FORMAT, mLocale).format(mCalendar.time)
-        mYearView.text = SimpleDateFormat(YEAR_FORMAT, mLocale).format(mCalendar.time)
+        mYearView.text = localeYear.toString()
 
         // Accessibility.
         val millis = mCalendar.timeInMillis
@@ -290,10 +300,12 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         private const val ANIMATION_DURATION = 300
         private const val ANIMATION_DELAY = 500
 
+        const val BUDDHIST_OFFSET = 543
+
         private const val YEAR_FORMAT = "yyyy"
         private const val MONTH_FORMAT = "MMMM"
         private const val DATE_FORMAT = "d"
-        private const val FULL_DATE_FORMAT = "E, d MMMM yyyy"
+        private const val FULL_DATE_FORMAT = "E, d MMMM "
 
         val LOCALE_EN = Locale("en", "EN")
         val LOCALE_TH = Locale("th", "TH")

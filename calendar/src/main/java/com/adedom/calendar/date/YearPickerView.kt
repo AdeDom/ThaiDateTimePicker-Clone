@@ -15,7 +15,8 @@ import java.util.*
 
 class YearPickerView(
     context: Context,
-    private val mController: DatePickerController
+    private val mController: DatePickerController,
+    private val mLocale: Locale,
 ) : ListView(context),
     OnItemClickListener,
     DatePickerDialog.OnDateChangedListener {
@@ -27,8 +28,15 @@ class YearPickerView(
 
     private fun init(context: Context) {
         val years = ArrayList<String>()
-        for (year in mController.getMinYear()..mController.getMaxYear()) {
-            years.add(String.format("%d", year))
+        if (mLocale == DatePickerDialog.LOCALE_TH) {
+            for (year in mController.getMinYear().plus(DatePickerDialog.BUDDHIST_OFFSET)..
+                    mController.getMaxYear().plus(DatePickerDialog.BUDDHIST_OFFSET)) {
+                years.add(year.toString())
+            }
+        } else {
+            for (year in mController.getMinYear()..mController.getMaxYear()) {
+                years.add(year.toString())
+            }
         }
         mAdapter = YearAdapter(context, R.layout.calendar_year, years)
         adapter = mAdapter
@@ -97,10 +105,9 @@ class YearPickerView(
         }
     }
 
-    companion object {
-        private fun getYearFromTextView(view: TextView): Int {
-            return Integer.valueOf(view.text.toString())
-        }
+    private fun getYearFromTextView(view: TextView): Int {
+        val year = view.text.toString().toInt()
+        return if (mLocale == DatePickerDialog.LOCALE_TH) year.minus(DatePickerDialog.BUDDHIST_OFFSET) else year
     }
 
     init {
