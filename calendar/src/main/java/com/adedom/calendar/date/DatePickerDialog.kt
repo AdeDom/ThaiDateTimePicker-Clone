@@ -23,6 +23,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     private val mCalendar = Calendar.getInstance()
     private lateinit var mCallBack: OnDateSetListener
+    private lateinit var mLocale: Locale
     private val mListeners = HashSet<OnDateChangedListener>()
 
     private lateinit var mAnimator: AccessibleDateAnimator
@@ -58,11 +59,13 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     fun initialize(
         callBack: OnDateSetListener,
+        locale: Locale,
         year: Int,
         monthOfYear: Int,
         dayOfMonth: Int
     ) {
         mCallBack = callBack
+        mLocale = locale
         mCalendar.set(Calendar.YEAR, year)
         mCalendar.set(Calendar.MONTH, monthOfYear)
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -203,7 +206,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
                 }
                 pulseAnimator.start()
 
-                val yearString: CharSequence = YEAR_FORMAT.format(millis)
+                val yearString: CharSequence = SimpleDateFormat(YEAR_FORMAT, mLocale).format(millis)
                 mAnimator.contentDescription = "$mYearPickerDescription: $yearString"
                 Utils.tryAccessibilityAnnounce(mAnimator, mSelectYear)
             }
@@ -211,9 +214,9 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     }
 
     private fun updateDisplay(announce: Boolean) {
-        mTvFullDate.text = FULL_DATE_FORMAT.format(mCalendar.time)
-        mSelectedMonthTextView.text = MONTH_FORMAT.format(mCalendar.time)
-        mYearView.text = YEAR_FORMAT.format(mCalendar.time)
+        mTvFullDate.text = SimpleDateFormat(FULL_DATE_FORMAT, mLocale).format(mCalendar.time)
+        mSelectedMonthTextView.text = SimpleDateFormat(MONTH_FORMAT, mLocale).format(mCalendar.time)
+        mYearView.text = SimpleDateFormat(YEAR_FORMAT, mLocale).format(mCalendar.time)
 
         // Accessibility.
         val millis = mCalendar.timeInMillis
@@ -258,7 +261,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         for (listener in mListeners) listener.onDateChanged()
     }
 
-    override fun getSelectedDay()= MonthAdapter.CalendarDay(mCalendar)
+    override fun getSelectedDay() = MonthAdapter.CalendarDay(mCalendar)
 
     override fun getMinYear() = DEFAULT_START_YEAR
 
@@ -287,18 +290,23 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         private const val ANIMATION_DURATION = 300
         private const val ANIMATION_DELAY = 500
 
-        private val YEAR_FORMAT = SimpleDateFormat("yyyy", Locale.getDefault())
-        private val MONTH_FORMAT = SimpleDateFormat("MMMM", Locale.getDefault())
-        private val FULL_DATE_FORMAT = SimpleDateFormat("E, dd MMMM yyyy", Locale.getDefault())
+        private const val YEAR_FORMAT = "yyyy"
+        private const val MONTH_FORMAT = "MMMM"
+        private const val DATE_FORMAT = "d"
+        private const val FULL_DATE_FORMAT = "E, d MMMM yyyy"
+
+        val LOCALE_EN = Locale("en", "EN")
+        val LOCALE_TH = Locale("th", "TH")
 
         fun newInstance(
+            locale: Locale,
             callback: OnDateSetListener,
             year: Int,
             monthOfYear: Int,
             dayOfMonth: Int,
         ): DatePickerDialog {
             val ret = DatePickerDialog()
-            ret.initialize(callback, year, monthOfYear, dayOfMonth)
+            ret.initialize(callback, locale, year, monthOfYear, dayOfMonth)
             return ret
         }
     }

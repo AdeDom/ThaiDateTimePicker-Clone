@@ -13,17 +13,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         textView.setOnClickListener {
-            datePickerDialog(object : DatePickerDialog.OnDateSetListener {
-                override fun onDateSet(
-                    view: DatePickerDialog,
-                    year: Int,
-                    monthOfYear: Int,
-                    dayOfMonth: Int
-                ) {
-                    val date = "$dayOfMonth/${monthOfYear.plus(1)}/$year"
-                    Toast.makeText(baseContext, date, Toast.LENGTH_SHORT).show()
-                }
-            })
+            datePickerDialog(DatePickerDialog.LOCALE_TH,
+                object : DatePickerDialog.OnDateSetListener {
+                    override fun onDateSet(
+                        view: DatePickerDialog,
+                        year: Int,
+                        monthOfYear: Int,
+                        dayOfMonth: Int
+                    ) {
+                        val date = "$dayOfMonth/${monthOfYear.plus(1)}/$year"
+                        Toast.makeText(baseContext, date, Toast.LENGTH_SHORT).show()
+                    }
+                })
         }
     }
 }
