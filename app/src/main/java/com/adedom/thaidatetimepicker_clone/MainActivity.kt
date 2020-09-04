@@ -1,7 +1,6 @@
 package com.adedom.thaidatetimepicker_clone
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.adedom.calendar.date.DatePickerDialog
 import com.adedom.calendar.date.datePickerDialog
@@ -13,13 +12,17 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        textView.setOnClickListener {
+        btAnnoDomini.setOnClickListener {
+            datePickerDialog(DatePickerDialog.LOCALE_EN, this)
+        }
+
+        btBuddhistEra.setOnClickListener {
             datePickerDialog(DatePickerDialog.LOCALE_TH, this)
         }
     }
 
     override fun onDateSet(date: String) {
-        Toast.makeText(baseContext, date, Toast.LENGTH_SHORT).show()
+        tvCalendar.text = date
     }
 
 }

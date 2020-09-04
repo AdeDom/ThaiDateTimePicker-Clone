@@ -27,17 +27,11 @@ class YearPickerView(
     private var mSelectedView: TextViewWithCircularIndicator? = null
 
     private fun init(context: Context) {
-        val years = ArrayList<String>()
-        if (mLocale == DatePickerDialog.LOCALE_TH) {
-            for (year in mController.getMinYear().plus(DatePickerDialog.BUDDHIST_OFFSET)..
-                    mController.getMaxYear().plus(DatePickerDialog.BUDDHIST_OFFSET)) {
-                years.add(year.toString())
-            }
-        } else {
-            for (year in mController.getMinYear()..mController.getMaxYear()) {
-                years.add(year.toString())
-            }
-        }
+        val years = DateUtil.getYearList(
+            mLocale,
+            mController.getMinYear(),
+            mController.getMaxYear()
+        )
         mAdapter = YearAdapter(context, R.layout.calendar_year, years)
         adapter = mAdapter
     }
@@ -106,8 +100,7 @@ class YearPickerView(
     }
 
     private fun getYearFromTextView(view: TextView): Int {
-        val year = view.text.toString().toInt()
-        return if (mLocale == DatePickerDialog.LOCALE_TH) year.minus(DatePickerDialog.BUDDHIST_OFFSET) else year
+        return DateUtil.getYearFromText(mLocale, view.text.toString())
     }
 
     init {

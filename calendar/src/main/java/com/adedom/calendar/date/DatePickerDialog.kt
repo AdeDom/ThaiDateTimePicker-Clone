@@ -49,6 +49,8 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     private lateinit var mYearPickerDescription: String
     private lateinit var mSelectYear: String
 
+    private var mIsFullDateVisibility = true
+
     interface OnDateSetListener {
         fun onDateSet(date: String)
     }
@@ -92,6 +94,8 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         mSelectedMonthTextView = view.findViewById<View>(R.id.date_picker_month) as TextView
         mYearView = view.findViewById<View>(R.id.date_picker_year) as TextView
 
+        mTvFullDate.visibility = if (mIsFullDateVisibility) View.VISIBLE else View.GONE
+
         mYearView.setOnClickListener { setCurrentView(YEAR_VIEW) }
         mMonthAndDayView.setOnClickListener { setCurrentView(MONTH_AND_DAY_VIEW) }
 
@@ -125,16 +129,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         val okButton = view.findViewById<View>(R.id.ok) as Button
         okButton.setOnClickListener {
-            val date = if (mLocale == LOCALE_TH) {
-                "${mCalendar[Calendar.DAY_OF_MONTH]}/" +
-                        "${mCalendar[Calendar.MONTH].plus(1)}/" +
-                        "${mCalendar[Calendar.YEAR].plus(BUDDHIST_OFFSET)}"
-            } else {
-                "${mCalendar[Calendar.DAY_OF_MONTH]}/" +
-                        "${mCalendar[Calendar.MONTH].plus(1)}/" +
-                        "${mCalendar[Calendar.YEAR]}"
-            }
-            mCallBack.onDateSet(date)
+            mCallBack.onDateSet(DateUtil.getDatePicker(mLocale, mCalendar))
             dismiss()
         }
         okButton.typeface = TypefaceHelper[activity, "Roboto-Medium"]
@@ -220,13 +215,11 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     }
 
     private fun updateDisplay(announce: Boolean) {
-        val year = SimpleDateFormat(YEAR_FORMAT, mLocale).format(mCalendar.time).toInt()
-        val localeYear = if (mLocale == LOCALE_TH) year.plus(BUDDHIST_OFFSET) else year
         val fullDate = SimpleDateFormat(FULL_DATE_FORMAT, mLocale).format(mCalendar.time)
-            .replace(".", "") + localeYear.toString()
+            .replace(".", "") + DateUtil.getLocaleYear(mLocale, mCalendar)
         mTvFullDate.text = fullDate
         mSelectedMonthTextView.text = SimpleDateFormat(MONTH_FORMAT, mLocale).format(mCalendar.time)
-        mYearView.text = localeYear.toString()
+        mYearView.text = DateUtil.getLocaleYear(mLocale, mCalendar)
 
         // Accessibility.
         val millis = mCalendar.timeInMillis
@@ -244,6 +237,10 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     fun setAccentColor(accentColor: Int) {
         mAccentColor = accentColor
+    }
+
+    fun setVisibility(visibility: Boolean) {
+        mIsFullDateVisibility = visibility
     }
 
     override fun getAccentColor() = mAccentColor
@@ -300,9 +297,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         private const val ANIMATION_DURATION = 300
         private const val ANIMATION_DELAY = 500
 
-        const val BUDDHIST_OFFSET = 543
-
-        private const val YEAR_FORMAT = "yyyy"
+        const val YEAR_FORMAT = "yyyy"
         private const val MONTH_FORMAT = "MMMM"
         private const val DATE_FORMAT = "d"
         private const val FULL_DATE_FORMAT = "E, d MMMM "
