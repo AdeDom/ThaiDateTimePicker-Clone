@@ -467,26 +467,32 @@ public abstract class MonthView extends View {
 
             int calendarDay = (i + mWeekStart) % mNumDays;
             mDayLabelCalendar.set(Calendar.DAY_OF_WEEK, calendarDay);
-            Locale locale = Locale.getDefault();
-            String localWeekDisplayName = mDayLabelCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, locale);
-            String weekString = localWeekDisplayName.toUpperCase(locale).substring(0, 1);
 
-            if (locale.equals(Locale.CHINA) || locale.equals(Locale.CHINESE) || locale.equals(Locale.SIMPLIFIED_CHINESE) || locale.equals(Locale.TRADITIONAL_CHINESE)) {
-                int len = localWeekDisplayName.length();
-                weekString = localWeekDisplayName.substring(len - 1, len);
-            }
+            /*
+                Locale locale = Locale.getDefault();
+                String localWeekDisplayName = mDayLabelCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, locale);
+                String weekString = localWeekDisplayName.toUpperCase(locale).substring(0, 1);
 
-            if (locale.getLanguage().equals("he") || locale.getLanguage().equals("iw")) {
-                if (mDayLabelCalendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+                if (locale.equals(Locale.CHINA) || locale.equals(Locale.CHINESE) || locale.equals(Locale.SIMPLIFIED_CHINESE) || locale.equals(Locale.TRADITIONAL_CHINESE)) {
                     int len = localWeekDisplayName.length();
-                    weekString = localWeekDisplayName.substring(len - 2, len - 1);
-                } else {
-                    // I know this is duplication, but it makes the code easier to grok by
-                    // having all hebrew code in the same block
-                    weekString = localWeekDisplayName.toUpperCase(locale).substring(0, 1);
+                    weekString = localWeekDisplayName.substring(len - 1, len);
                 }
-            }
-            canvas.drawText(weekString, x, y, mMonthDayLabelPaint);
+
+                if (locale.getLanguage().equals("he") || locale.getLanguage().equals("iw")) {
+                    if (mDayLabelCalendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+                        int len = localWeekDisplayName.length();
+                        weekString = localWeekDisplayName.substring(len - 2, len - 1);
+                    } else {
+                        // I know this is duplication, but it makes the code easier to grok by
+                        // having all hebrew code in the same block
+                        weekString = localWeekDisplayName.toUpperCase(locale).substring(0, 1);
+                    }
+                }
+                canvas.drawText(weekString, x, y, mMonthDayLabelPaint);
+             */
+
+            String dayLabel = DateUtil.Companion.getDayLabel(mDayLabelCalendar, mLocale);
+            canvas.drawText(dayLabel, x, y, mMonthDayLabelPaint);
         }
     }
 

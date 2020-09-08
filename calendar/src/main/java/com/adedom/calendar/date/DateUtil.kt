@@ -11,6 +11,7 @@ class DateUtil {
         const val YEAR_FORMAT = "yyyy"
         const val MONTH_FORMAT = "MMMM"
         const val DATE_FORMAT = "d"
+        const val DATE_NAME_FORMAT = "E"
         const val FULL_DATE_FORMAT = "E, d MMMM "
 
         fun getLocaleYear(locale: Locale, calendar: Calendar): String {
@@ -69,6 +70,14 @@ class DateUtil {
                 tempYear
             }
             return "$month $year"
+        }
+
+        fun getDayLabel(calendar: Calendar, locale: Locale): String {
+            val sdf = SimpleDateFormat(DATE_NAME_FORMAT, locale)
+            return when (locale) {
+                Locale("th", "TH") -> sdf.format(calendar.timeInMillis).replace(".", "")
+                else -> sdf.format(calendar.timeInMillis).substring(0, 1).toUpperCase(locale)
+            }
         }
     }
 
