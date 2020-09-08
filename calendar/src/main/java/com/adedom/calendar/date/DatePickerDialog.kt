@@ -2,6 +2,7 @@ package com.adedom.calendar.date
 
 import android.animation.ObjectAnimator
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.*
@@ -10,6 +11,7 @@ import android.view.animation.Animation
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.adedom.calendar.R
@@ -84,47 +86,51 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         val view: View = inflater.inflate(R.layout.calendar_date_picker_dialog, container)
 
-        mTvFullDate = view.findViewById(R.id.tv_full_date) as TextView
-        mMonthAndDayView = view.findViewById<View>(R.id.date_picker_month_and_day) as LinearLayout
-        mSelectedMonthTextView = view.findViewById<View>(R.id.date_picker_month) as TextView
-        mYearView = view.findViewById<View>(R.id.date_picker_year) as TextView
-
-        mTvFullDate.visibility = if (mIsFullDateVisibility) View.VISIBLE else View.GONE
-
-        mYearView.setOnClickListener { setCurrentView(YEAR_VIEW) }
-        mMonthAndDayView.setOnClickListener { setCurrentView(MONTH_AND_DAY_VIEW) }
-
-        val activity: Activity? = activity
-        mDayPickerView = SimpleDayPickerView(activity, this, mLocale)
-        if (activity != null)
-            mYearPickerView = YearPickerView(activity, this, mLocale)
-
-        if (mAccentColor == -1) {
-            mAccentColor = activity?.let { Utils.getAccentColorFromThemeIfAvailable(it) } ?: 0
+        mTvFullDate = view.findViewById<TextView>(R.id.tv_full_date).apply {
+            visibility = if (mIsFullDateVisibility) View.VISIBLE else View.GONE
         }
 
-        val res = resources
-        mDayPickerDescription = res.getString(R.string.mdtp_day_picker_description)
-        mSelectDay = res.getString(R.string.mdtp_select_day)
-        mYearPickerDescription = res.getString(R.string.mdtp_year_picker_description)
-        mSelectYear = res.getString(R.string.mdtp_select_year)
+        mMonthAndDayView = view.findViewById<LinearLayout>(R.id.date_picker_month_and_day).apply {
+            setOnClickListener { setCurrentView(MONTH_AND_DAY_VIEW) }
+        }
 
-        val bgColorResource: Int = R.color.mdtp_date_picker_view_animator
-        val color = activity?.let { ContextCompat.getColor(it, bgColorResource) }
-        color?.let { view.setBackgroundColor(it) }
+        mSelectedMonthTextView = view.findViewById(R.id.date_picker_month) as TextView
 
-        mAnimator = view.findViewById<View>(R.id.animator) as AccessibleDateAnimator
-        mAnimator.addView(mDayPickerView)
-        mAnimator.addView(mYearPickerView)
-        mAnimator.setDateMillis(mCalendar.timeInMillis)
-        // TODO: Replace with animation decided upon by the design team.
-        val animation: Animation = AlphaAnimation(0.0f, 1.0f)
-        animation.duration = ANIMATION_DURATION.toLong()
-        mAnimator.inAnimation = animation
-        // TODO: Replace with animation decided upon by the design team.
-        val animation2: Animation = AlphaAnimation(1.0f, 0.0f)
-        animation2.duration = ANIMATION_DURATION.toLong()
-        mAnimator.outAnimation = animation2
+        mYearView = view.findViewById<TextView>(R.id.date_picker_year).apply {
+            setOnClickListener { setCurrentView(YEAR_VIEW) }
+        }
+
+        activity?.let {
+            mDayPickerView = SimpleDayPickerView(it, this, mLocale)
+            mYearPickerView = YearPickerView(it, this, mLocale)
+
+            if (mAccentColor == -1) {
+                mAccentColor = Utils.getAccentColorFromThemeIfAvailable(it)
+            }
+
+            val bgColorResource: Int = R.color.mdtp_date_picker_view_animator
+            val color = ContextCompat.getColor(it, bgColorResource)
+            view.setBackgroundColor(color)
+        }
+
+        mDayPickerDescription = resources.getString(R.string.mdtp_day_picker_description)
+        mSelectDay = resources.getString(R.string.mdtp_select_day)
+        mYearPickerDescription = resources.getString(R.string.mdtp_year_picker_description)
+        mSelectYear = resources.getString(R.string.mdtp_select_year)
+
+        mAnimator = view.findViewById<AccessibleDateAnimator>(R.id.animator).apply {
+            addView(mDayPickerView)
+            addView(mYearPickerView)
+            setDateMillis(mCalendar.timeInMillis)
+
+            val animation: Animation = AlphaAnimation(0.0f, 1.0f)
+            animation.duration = ANIMATION_DURATION
+            inAnimation = animation
+
+            val animation2: Animation = AlphaAnimation(1.0f, 0.0f)
+            animation2.duration = ANIMATION_DURATION
+            outAnimation = animation2
+        }
 
         view.findViewById<Button>(R.id.ok).apply {
             setOnClickListener {
@@ -163,7 +169,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
             MONTH_AND_DAY_VIEW -> {
                 pulseAnimator = Utils.getPulseAnimator(mMonthAndDayView, 0.9f, 1.05f)
                 if (mDelayAnimation) {
-                    pulseAnimator.startDelay = ANIMATION_DELAY.toLong()
+                    pulseAnimator.startDelay = ANIMATION_DELAY
                     mDelayAnimation = false
                 }
                 mDayPickerView.onDateChanged()
@@ -183,7 +189,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
             YEAR_VIEW -> {
                 pulseAnimator = Utils.getPulseAnimator(mYearView, 0.85f, 1.1f)
                 if (mDelayAnimation) {
-                    pulseAnimator.startDelay = ANIMATION_DELAY.toLong()
+                    pulseAnimator.startDelay = ANIMATION_DELAY
                     mDelayAnimation = false
                 }
                 mYearPickerView.onDateChanged()
@@ -227,11 +233,11 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         mLocale = locale
     }
 
-    fun setAccentColor(accentColor: Int) {
-        mAccentColor = accentColor
+    fun setAccentColor(@ColorInt color: Int) {
+        mAccentColor = Color.argb(255, Color.red(color), Color.green(color), Color.blue(color))
     }
 
-    fun setVisibility(visibility: Boolean) {
+    fun setTextFullDateVisibility(visibility: Boolean) {
         mIsFullDateVisibility = visibility
     }
 
@@ -286,8 +292,8 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         private const val DEFAULT_START_YEAR = 1900
         private const val DEFAULT_END_YEAR = 2100
 
-        private const val ANIMATION_DURATION = 300
-        private const val ANIMATION_DELAY = 500
+        private const val ANIMATION_DURATION: Long = 300
+        private const val ANIMATION_DELAY: Long = 500
 
         val LOCALE_EN = Locale("en", "EN")
         val LOCALE_TH = Locale("th", "TH")
