@@ -79,6 +79,14 @@ class DateUtil {
                 else -> sdf.format(calendar.timeInMillis).substring(0, 1).toUpperCase(locale)
             }
         }
+
+        fun getTextOkFromLocale(locale: Locale): String {
+            return if (locale == DatePickerDialog.LOCALE_TH) "ตกลง" else "OK"
+        }
+
+        fun getTextCancelFromLocale(locale: Locale): String {
+            return if (locale == DatePickerDialog.LOCALE_TH) "ยกเลิก" else "CANCEL"
+        }
     }
 
 }

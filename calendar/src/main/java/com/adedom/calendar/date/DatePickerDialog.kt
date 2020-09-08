@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.adedom.calendar.HapticFeedbackController
 import com.adedom.calendar.R
 import com.adedom.calendar.TypefaceHelper
 import com.adedom.calendar.Utils
@@ -38,8 +37,6 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     private var mCurrentView = UNINITIALIZED
 
     private var mAccentColor = -1
-
-    private var mHapticFeedbackController: HapticFeedbackController? = null
 
     private var mDelayAnimation = true
 
@@ -102,6 +99,10 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         if (activity != null)
             mYearPickerView = YearPickerView(activity, this, mLocale)
 
+        if (mAccentColor == -1) {
+            mAccentColor = activity?.let { Utils.getAccentColorFromThemeIfAvailable(it) } ?: 0
+        }
+
         val res = resources
         mDayPickerDescription = res.getString(R.string.mdtp_day_picker_description)
         mSelectDay = res.getString(R.string.mdtp_select_day)
@@ -125,44 +126,33 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         animation2.duration = ANIMATION_DURATION.toLong()
         mAnimator.outAnimation = animation2
 
-        val okButton = view.findViewById<View>(R.id.ok) as Button
-        okButton.setOnClickListener {
-            mCallBack.onDateSet(DateUtil.getDatePicker(mLocale, mCalendar))
-            dismiss()
+        view.findViewById<Button>(R.id.ok).apply {
+            setOnClickListener {
+                mCallBack.onDateSet(DateUtil.getDatePicker(mLocale, mCalendar))
+                dismiss()
+            }
+            typeface = TypefaceHelper[activity, "Roboto-Medium"]
+            setTextColor(mAccentColor)
+            text = DateUtil.getTextOkFromLocale(mLocale)
         }
-        okButton.typeface = TypefaceHelper[activity, "Roboto-Medium"]
 
-        val cancelButton = view.findViewById<View>(R.id.cancel) as Button
-        cancelButton.setOnClickListener {
-            if (dialog != null) dialog?.cancel()
+        view.findViewById<Button>(R.id.cancel).apply {
+            setOnClickListener {
+                dialog?.cancel()
+            }
+            typeface = TypefaceHelper[activity, "Roboto-Medium"]
+            setTextColor(mAccentColor)
+            text = DateUtil.getTextCancelFromLocale(mLocale)
         }
-        cancelButton.typeface = TypefaceHelper[activity, "Roboto-Medium"]
-        cancelButton.visibility = if (isCancelable) View.VISIBLE else View.GONE
 
-        if (mAccentColor == -1) {
-            mAccentColor = getActivity()?.let { Utils.getAccentColorFromThemeIfAvailable(it) } ?: 0
+        view.findViewById<LinearLayout>(R.id.day_picker_selected_date_layout).apply {
+            setBackgroundColor(mAccentColor)
         }
-        view.findViewById<View>(R.id.day_picker_selected_date_layout)
-            .setBackgroundColor(mAccentColor)
-        okButton.setTextColor(mAccentColor)
-        cancelButton.setTextColor(mAccentColor)
 
         updateDisplay(false)
         setCurrentView(MONTH_AND_DAY_VIEW)
 
-        mHapticFeedbackController = activity?.let { HapticFeedbackController(it) }
         return view
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mHapticFeedbackController?.start()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mHapticFeedbackController?.stop()
-        dismiss()
     }
 
     private fun setCurrentView(viewIndex: Int) {
