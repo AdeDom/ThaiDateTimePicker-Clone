@@ -25,15 +25,14 @@ class DateUtil {
             }
         }
 
-        fun getDatePicker(locale: Locale, calendar: Calendar): String {
+        fun getDatePicker(locale: Locale, calendar: Calendar): Triple<Int, Int, Int> {
+            val year: Int = calendar[Calendar.YEAR]
+            val monthOfYear: Int = calendar[Calendar.MONTH].plus(1)
+            val dayOfMonth: Int = calendar[Calendar.DAY_OF_MONTH]
             return if (locale == DatePickerDialog.LOCALE_TH) {
-                "${calendar[Calendar.DAY_OF_MONTH]}/" +
-                        "${calendar[Calendar.MONTH].plus(1)}/" +
-                        "${calendar[Calendar.YEAR].plus(BUDDHIST_OFFSET)}"
+                Triple(year.plus(BUDDHIST_OFFSET), monthOfYear, dayOfMonth)
             } else {
-                "${calendar[Calendar.DAY_OF_MONTH]}/" +
-                        "${calendar[Calendar.MONTH].plus(1)}/" +
-                        "${calendar[Calendar.YEAR]}"
+                Triple(year, monthOfYear, dayOfMonth)
             }
         }
 

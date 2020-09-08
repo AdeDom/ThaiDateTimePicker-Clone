@@ -21,7 +21,8 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    override fun onDateSet(date: String) {
+    override fun onDateSet(year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        val date = "$dayOfMonth/$monthOfYear/$year"
         tvCalendar.text = date
     }
 

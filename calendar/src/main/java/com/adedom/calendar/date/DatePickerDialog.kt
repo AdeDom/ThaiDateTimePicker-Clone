@@ -20,6 +20,8 @@ import com.adedom.calendar.Utils
 import java.text.SimpleDateFormat
 import java.util.*
 
+// TODO: 08/09/2563 max min date
+
 class DatePickerDialog : DialogFragment(), DatePickerController {
 
     private val mCalendar = Calendar.getInstance()
@@ -51,7 +53,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     private var mIsFullDateVisibility = true
 
     interface OnDateSetListener {
-        fun onDateSet(date: String)
+        fun onDateSet(year: Int, monthOfYear: Int, dayOfMonth: Int)
     }
 
     interface OnDateChangedListener {
@@ -134,7 +136,8 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         view.findViewById<Button>(R.id.ok).apply {
             setOnClickListener {
-                mCallBack.onDateSet(DateUtil.getDatePicker(mLocale, mCalendar))
+                val date = DateUtil.getDatePicker(mLocale, mCalendar)
+                mCallBack.onDateSet(date.first, date.second, date.third)
                 dismiss()
             }
             typeface = TypefaceHelper[activity, "Roboto-Medium"]
@@ -237,7 +240,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         mAccentColor = Color.argb(255, Color.red(color), Color.green(color), Color.blue(color))
     }
 
-    fun setTextFullDateVisibility(visibility: Boolean) {
+    fun setTitleLabelFullDate(visibility: Boolean) {
         mIsFullDateVisibility = visibility
     }
 

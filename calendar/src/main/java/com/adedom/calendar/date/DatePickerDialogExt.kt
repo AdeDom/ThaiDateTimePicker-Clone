@@ -11,7 +11,7 @@ fun AppCompatActivity.datePickerDialog(
     monthOfYear: Int = Calendar.getInstance().get(Calendar.MONTH),
     dayOfMonth: Int = Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
     accentColor: Int = Color.parseColor("#ffce55"),
-    isTextFullDate: Boolean = true,
+    isTitleLabelFullDate: Boolean = true,
 ) = DatePickerDialog.newInstance(
     callback,
     year,
@@ -20,5 +20,5 @@ fun AppCompatActivity.datePickerDialog(
 ).apply {
     setLocale(locale)
     setAccentColor(accentColor)
-    setTextFullDateVisibility(isTextFullDate)
+    setTitleLabelFullDate(isTitleLabelFullDate)
 }.show(supportFragmentManager, null)
