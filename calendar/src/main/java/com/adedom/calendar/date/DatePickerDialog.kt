@@ -23,7 +23,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     private val mCalendar = Calendar.getInstance()
     private lateinit var mCallBack: OnDateSetListener
-    private lateinit var mLocale: Locale
+    private var mLocale: Locale = LOCALE_EN
     private val mListeners = HashSet<OnDateChangedListener>()
 
     private lateinit var mAnimator: AccessibleDateAnimator
@@ -61,13 +61,11 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     fun initialize(
         callBack: OnDateSetListener,
-        locale: Locale,
         year: Int,
         monthOfYear: Int,
         dayOfMonth: Int
     ) {
         mCallBack = callBack
-        mLocale = locale
         mCalendar.set(Calendar.YEAR, year)
         mCalendar.set(Calendar.MONTH, monthOfYear)
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -235,6 +233,10 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         }
     }
 
+    fun setLocale(locale: Locale) {
+        mLocale = locale
+    }
+
     fun setAccentColor(accentColor: Int) {
         mAccentColor = accentColor
     }
@@ -306,14 +308,13 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         val LOCALE_TH = Locale("th", "TH")
 
         fun newInstance(
-            locale: Locale,
             callback: OnDateSetListener,
             year: Int,
             monthOfYear: Int,
             dayOfMonth: Int,
         ): DatePickerDialog {
             val ret = DatePickerDialog()
-            ret.initialize(callback, locale, year, monthOfYear, dayOfMonth)
+            ret.initialize(callback, year, monthOfYear, dayOfMonth)
             return ret
         }
     }
