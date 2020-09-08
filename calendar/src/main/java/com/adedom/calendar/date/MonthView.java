@@ -26,7 +26,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,7 +42,6 @@ import com.adedom.calendar.R;
 import com.adedom.calendar.TypefaceHelper;
 
 import java.security.InvalidParameterException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -120,8 +118,6 @@ public abstract class MonthView extends View {
 
     // used for scaling to the device density
     protected static float mScale = 0;
-
-    private static final int BUDDHIST_OFFSET = 543;
 
     private final Locale mLocale;
     protected DatePickerController mController;
@@ -453,13 +449,7 @@ public abstract class MonthView extends View {
             return DateUtils.formatDateRange(getContext(), mFormatter, millis, millis, flags, null).toString();
          */
 
-        SimpleDateFormat sdfMonth = new SimpleDateFormat("MMMM", mLocale);
-        String month = sdfMonth.format(mCalendar.getTimeInMillis());
-
-        SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy", mLocale);
-        int year = Integer.parseInt(sdfYear.format(mCalendar.getTimeInMillis()));
-        if (mLocale.equals(new Locale("th", "TH"))) year += BUDDHIST_OFFSET;
-        return month + " " + year;
+        return DateUtil.Companion.getMonthAndYear(mCalendar, mLocale);
     }
 
     protected void drawMonthTitle(Canvas canvas) {

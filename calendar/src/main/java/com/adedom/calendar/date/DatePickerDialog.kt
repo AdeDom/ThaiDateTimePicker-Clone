@@ -205,7 +205,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
                 }
                 pulseAnimator.start()
 
-                val yearString: CharSequence = SimpleDateFormat(YEAR_FORMAT, mLocale).format(millis)
+                val yearString: CharSequence = SimpleDateFormat(DateUtil.YEAR_FORMAT, mLocale).format(millis)
                 mAnimator.contentDescription = "$mYearPickerDescription: $yearString"
                 Utils.tryAccessibilityAnnounce(mAnimator, mSelectYear)
             }
@@ -213,10 +213,10 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     }
 
     private fun updateDisplay(announce: Boolean) {
-        val fullDate = SimpleDateFormat(FULL_DATE_FORMAT, mLocale).format(mCalendar.time)
+        val fullDate = SimpleDateFormat(DateUtil.FULL_DATE_FORMAT, mLocale).format(mCalendar.time)
             .replace(".", "") + DateUtil.getLocaleYear(mLocale, mCalendar)
         mTvFullDate.text = fullDate
-        mSelectedMonthTextView.text = SimpleDateFormat(MONTH_FORMAT, mLocale).format(mCalendar.time)
+        mSelectedMonthTextView.text = SimpleDateFormat(DateUtil.MONTH_FORMAT, mLocale).format(mCalendar.time)
         mYearView.text = DateUtil.getLocaleYear(mLocale, mCalendar)
 
         // Accessibility.
@@ -298,11 +298,6 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         private const val ANIMATION_DURATION = 300
         private const val ANIMATION_DELAY = 500
-
-        const val YEAR_FORMAT = "yyyy"
-        private const val MONTH_FORMAT = "MMMM"
-        private const val DATE_FORMAT = "d"
-        private const val FULL_DATE_FORMAT = "E, d MMMM "
 
         val LOCALE_EN = Locale("en", "EN")
         val LOCALE_TH = Locale("th", "TH")
