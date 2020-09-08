@@ -98,7 +98,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         mMonthAndDayView.setOnClickListener { setCurrentView(MONTH_AND_DAY_VIEW) }
 
         val activity: Activity? = activity
-        mDayPickerView = SimpleDayPickerView(activity, this)
+        mDayPickerView = SimpleDayPickerView(activity, this, mLocale)
         if (activity != null)
             mYearPickerView = YearPickerView(activity, this, mLocale)
 

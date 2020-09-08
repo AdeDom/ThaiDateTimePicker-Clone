@@ -43,6 +43,7 @@ import com.adedom.calendar.R;
 import com.adedom.calendar.TypefaceHelper;
 
 import java.security.InvalidParameterException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -120,6 +121,9 @@ public abstract class MonthView extends View {
     // used for scaling to the device density
     protected static float mScale = 0;
 
+    private static final int BUDDHIST_OFFSET = 543;
+
+    private final Locale mLocale;
     protected DatePickerController mController;
 
     // affects the padding on the sides of this view
@@ -188,11 +192,13 @@ public abstract class MonthView extends View {
     protected int mMonthTitleColor;
 
     public MonthView(Context context) {
-        this(context, null, null);
+        this(context, null, null, null);
     }
 
-    public MonthView(Context context, AttributeSet attr, DatePickerController controller) {
+    public MonthView(Context context, AttributeSet attr, DatePickerController controller, Locale locale) {
         super(context, attr);
+        mLocale = locale;
+
         mController = controller;
         Resources res = context.getResources();
 
@@ -439,11 +445,21 @@ public abstract class MonthView extends View {
     }
 
     private String getMonthAndYearString() {
-        int flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
-                | DateUtils.FORMAT_NO_MONTH_DAY;
-        mStringBuilder.setLength(0);
-        long millis = mCalendar.getTimeInMillis();
-        return DateUtils.formatDateRange(getContext(), mFormatter, millis, millis, flags, null).toString();
+        /*
+            int flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
+                    | DateUtils.FORMAT_NO_MONTH_DAY;
+            mStringBuilder.setLength(0);
+            long millis = mCalendar.getTimeInMillis();
+            return DateUtils.formatDateRange(getContext(), mFormatter, millis, millis, flags, null).toString();
+         */
+
+        SimpleDateFormat sdfMonth = new SimpleDateFormat("MMMM", mLocale);
+        String month = sdfMonth.format(mCalendar.getTimeInMillis());
+
+        SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy", mLocale);
+        int year = Integer.parseInt(sdfYear.format(mCalendar.getTimeInMillis()));
+        if (mLocale.equals(new Locale("th", "TH"))) year += BUDDHIST_OFFSET;
+        return month + " " + year;
     }
 
     protected void drawMonthTitle(Canvas canvas) {
