@@ -22,9 +22,12 @@ import java.util.*
 
 // TODO: 08/09/2563 max min date
 
+// TODO: 08/09/2563 set internal all module
+
 class DatePickerDialog : DialogFragment(), DatePickerController {
 
     private val mCalendar = Calendar.getInstance()
+    private lateinit var mInitializeDate: DateItem
     private lateinit var mCallBack: OnDateSetListener
     private var mLocale: Locale = LOCALE_EN
     private val mListeners = HashSet<OnDateChangedListener>()
@@ -54,6 +57,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     interface OnDateSetListener {
         fun onDateSet(year: Int, monthOfYear: Int, dayOfMonth: Int)
+        fun onPeriodDate(diff: Long)
     }
 
     interface OnDateChangedListener {
@@ -70,6 +74,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         mCalendar.set(Calendar.YEAR, year)
         mCalendar.set(Calendar.MONTH, monthOfYear)
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        mInitializeDate = DateItem(year, monthOfYear, dayOfMonth)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -136,8 +141,17 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         view.findViewById<Button>(R.id.ok).apply {
             setOnClickListener {
-                val date = DateUtil.getDatePicker(mLocale, mCalendar)
-                mCallBack.onDateSet(date.first, date.second, date.third)
+                val selectDate = DateUtil.getDatePicker(mLocale, mCalendar)
+                mCallBack.onDateSet(selectDate.year, selectDate.monthOfYear, selectDate.dayOfMonth)
+
+                val initialize = DateItem(
+                    mInitializeDate.year,
+                    mInitializeDate.monthOfYear,
+                    mInitializeDate.dayOfMonth
+                )
+                val dateDiff = DateUtil.getPeriodDateDiff(mLocale, initialize, selectDate)
+                mCallBack.onPeriodDate(dateDiff)
+
                 dismiss()
             }
             typeface = TypefaceHelper[activity, "Roboto-Medium"]

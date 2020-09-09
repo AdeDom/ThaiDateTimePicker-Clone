@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.format.DateUtils
-import android.util.Log
 import android.view.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -135,12 +134,9 @@ class DatePickerDialog : DialogFragment(), View.OnClickListener, DatePickerContr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "onCreateView: ")
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         val view: View = inflater.inflate(R.layout.mdtp_date_picker_dialog, container)
-
-        Log.d(TAG, "onCreateView: $view")
 
         mMonthAndDayView = view.findViewById<View>(R.id.date_picker_month_and_day) as LinearLayout
         mMonthAndDayView.setOnClickListener(this)

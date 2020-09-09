@@ -2,6 +2,7 @@ package com.adedom.calendar.date
 
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class DateUtil {
 
@@ -25,14 +26,14 @@ class DateUtil {
             }
         }
 
-        fun getDatePicker(locale: Locale, calendar: Calendar): Triple<Int, Int, Int> {
+        fun getDatePicker(locale: Locale, calendar: Calendar): DateItem {
             val year: Int = calendar[Calendar.YEAR]
             val monthOfYear: Int = calendar[Calendar.MONTH].plus(1)
             val dayOfMonth: Int = calendar[Calendar.DAY_OF_MONTH]
             return if (locale == DatePickerDialog.LOCALE_TH) {
-                Triple(year.plus(BUDDHIST_OFFSET), monthOfYear, dayOfMonth)
+                DateItem(year.plus(BUDDHIST_OFFSET), monthOfYear, dayOfMonth)
             } else {
-                Triple(year, monthOfYear, dayOfMonth)
+                DateItem(year, monthOfYear, dayOfMonth)
             }
         }
 
@@ -85,6 +86,32 @@ class DateUtil {
 
         fun getTextCancelFromLocale(locale: Locale): String {
             return if (locale == DatePickerDialog.LOCALE_TH) "ยกเลิก" else "CANCEL"
+        }
+
+        fun getPeriodDateDiff(
+            locale: Locale,
+            initialize: DateItem,
+            selectDate: DateItem,
+        ): Long {
+            val simpleDateFormat = SimpleDateFormat("dd MM yyyy")
+            val date1 = "${initialize.dayOfMonth.toPadStart()} " +
+                    "${initialize.monthOfYear.plus(1).toPadStart()} " +
+                    "${initialize.year}"
+
+            val date2 = if (locale == DatePickerDialog.LOCALE_TH) {
+                "${selectDate.dayOfMonth.toPadStart()} " +
+                        "${selectDate.monthOfYear.toPadStart()} " +
+                        "${selectDate.year.minus(BUDDHIST_OFFSET)}"
+            } else {
+                "${selectDate.dayOfMonth.toPadStart()} " +
+                        "${selectDate.monthOfYear.toPadStart()} " +
+                        "${selectDate.year}"
+            }
+
+            val dateBegin: Date = simpleDateFormat.parse(date1)
+            val dateEnd: Date = simpleDateFormat.parse(date2)
+            val diff = dateEnd.time - dateBegin.time
+            return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
         }
     }
 
