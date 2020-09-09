@@ -6,7 +6,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import java.util.*
 
-class SimpleMonthView(
+internal class SimpleMonthView(
     context: Context?, attr: AttributeSet?, controller: DatePickerController?, locale: Locale
 ) : MonthView(context, attr, controller, locale) {
 

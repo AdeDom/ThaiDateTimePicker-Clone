@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ViewAnimator
 
-class AccessibleDateAnimator(
+internal class AccessibleDateAnimator(
     context: Context?, attrs: AttributeSet?
 ) : ViewAnimator(context, attrs) {
 

@@ -10,7 +10,7 @@ import android.util.TypedValue
 import android.view.View
 import androidx.core.content.ContextCompat
 
-class Utils {
+internal class Utils {
 
     companion object {
         private const val PULSE_ANIMATOR_DURATION = 544

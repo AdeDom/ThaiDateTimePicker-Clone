@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import java.util.*
 
-class SimpleDayPickerView : DayPickerView {
+internal class SimpleDayPickerView : DayPickerView {
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 

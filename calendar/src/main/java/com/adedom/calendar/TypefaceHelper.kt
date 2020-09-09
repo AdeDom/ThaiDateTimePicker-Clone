@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import androidx.collection.SimpleArrayMap
 
-class TypefaceHelper {
+internal class TypefaceHelper {
 
     companion object {
         private val cache = SimpleArrayMap<String, Typeface>()

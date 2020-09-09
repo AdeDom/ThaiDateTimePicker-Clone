@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class DateUtil {
+internal class DateUtil {
 
     companion object {
         private const val BUDDHIST_OFFSET = 543
@@ -116,3 +116,5 @@ class DateUtil {
     }
 
 }
+
+internal fun Int.toPadStart() = this.toString().padStart(2, '0')

@@ -3,7 +3,7 @@ package com.adedom.calendar.date
 import android.content.Context
 import java.util.*
 
-class SimpleMonthAdapter(
+internal class SimpleMonthAdapter(
     context: Context?, controller: DatePickerController?, private val mLocale: Locale
 ) : MonthAdapter(context, controller) {
 

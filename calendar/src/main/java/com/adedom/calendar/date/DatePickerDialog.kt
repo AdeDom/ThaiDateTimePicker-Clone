@@ -22,8 +22,6 @@ import java.util.*
 
 // TODO: 08/09/2563 max min date
 
-// TODO: 08/09/2563 set internal all module
-
 class DatePickerDialog : DialogFragment(), DatePickerController {
 
     private val mCalendar = Calendar.getInstance()
@@ -64,7 +62,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         fun onDateChanged()
     }
 
-    fun initialize(
+    private fun initialize(
         callBack: OnDateSetListener,
         year: Int,
         monthOfYear: Int,

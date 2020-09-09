@@ -13,7 +13,7 @@ import android.widget.TextView
 import com.adedom.calendar.R
 import java.util.*
 
-class YearPickerView(
+internal class YearPickerView(
     context: Context,
     private val mController: DatePickerController,
     private val mLocale: Locale,

@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import com.adedom.calendar.R
 import kotlin.math.min
 
-class TextViewWithCircularIndicator(
+internal class TextViewWithCircularIndicator(
     context: Context, attrs: AttributeSet?
 ) : AppCompatTextView(context, attrs) {
 
