@@ -20,8 +20,6 @@ import com.adedom.calendar.Utils
 import java.text.SimpleDateFormat
 import java.util.*
 
-// TODO: 08/09/2563 max min date
-
 class DatePickerDialog : DialogFragment(), DatePickerController {
 
     private val mCalendar = Calendar.getInstance()
@@ -36,7 +34,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     private lateinit var mMonthAndDayView: LinearLayout
     private lateinit var mSelectedMonthTextView: TextView
     private lateinit var mYearView: TextView
-    private lateinit var mDayPickerView: DayPickerView
+    private var mDayPickerView: DayPickerView? = null
     private lateinit var mYearPickerView: YearPickerView
 
     private var mCurrentView = UNINITIALIZED
@@ -52,6 +50,10 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     private lateinit var mSelectYear: String
 
     private var mIsFullDateVisibility = true
+    private val highlightedDays: Array<Calendar>? = null
+    private val selectableDays: Array<Calendar>? = null
+    private var mMinDate: Calendar? = null
+    private var mMaxDate: Calendar? = null
 
     interface OnDateSetListener {
         fun onDateSet(year: Int, monthOfYear: Int, dayOfMonth: Int)
@@ -187,7 +189,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
                     pulseAnimator.startDelay = ANIMATION_DELAY
                     mDelayAnimation = false
                 }
-                mDayPickerView.onDateChanged()
+                mDayPickerView?.onDateChanged()
                 if (mCurrentView != viewIndex) {
                     mMonthAndDayView.isSelected = true
                     mYearView.isSelected = false
@@ -256,15 +258,34 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         mIsFullDateVisibility = visibility
     }
 
+    fun setMinDate(calendar: Calendar) {
+        mMinDate = calendar
+        mDayPickerView?.onChange()
+    }
+
+    fun setMaxDate(calendar: Calendar) {
+        mMaxDate = calendar
+        mDayPickerView?.onChange()
+    }
+
     override fun getAccentColor() = mAccentColor
 
-    override fun getHighlightedDays() = arrayOf(Calendar.getInstance())
+    override fun getHighlightedDays(): Array<Calendar> {
+        return highlightedDays ?: arrayOf(Calendar.getInstance())
+    }
 
-    override fun getSelectableDays() = arrayOf(Calendar.getInstance())
+    override fun getSelectableDays(): Array<Calendar> {
+        return selectableDays!!
+    }
 
     override fun onYearSelected(year: Int) {
         mCalendar[Calendar.YEAR] = year
-        updatePickers()
+
+        DateUtil.adjustDayInMonthIfNeeded(mCalendar)
+        if (mMinDate != null && mMaxDate != null)
+            DateUtil.setToNearestDate(selectableDays, mMinDate!!, mMaxDate!!, mCalendar)
+        for (listener in mListeners) listener.onDateChanged()
+
         setCurrentView(MONTH_AND_DAY_VIEW)
         updateDisplay(true)
     }
@@ -273,21 +294,35 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         mCalendar[Calendar.YEAR] = year
         mCalendar[Calendar.MONTH] = month
         mCalendar[Calendar.DAY_OF_MONTH] = day
-        updatePickers()
-        updateDisplay(true)
-    }
-
-    private fun updatePickers() {
         for (listener in mListeners) listener.onDateChanged()
+        updateDisplay(true)
     }
 
     override fun getSelectedDay() = MonthAdapter.CalendarDay(mCalendar)
 
-    override fun getMinYear() = DEFAULT_START_YEAR
+    override fun getMinYear(): Int {
+        if (selectableDays != null) return selectableDays[0].get(Calendar.YEAR)
+        return if (mMinDate != null && mMinDate!![Calendar.YEAR] > DEFAULT_START_YEAR) mMinDate!![Calendar.YEAR] else DEFAULT_START_YEAR
+    }
 
-    override fun getMaxYear() = DEFAULT_END_YEAR
+    override fun getMaxYear(): Int {
+        if (selectableDays != null) return selectableDays[selectableDays.size - 1][Calendar.YEAR]
+        return if (mMaxDate != null && mMaxDate!![Calendar.YEAR] < DEFAULT_END_YEAR) mMaxDate!![Calendar.YEAR] else DEFAULT_END_YEAR
+    }
 
-    override fun isOutOfRange(year: Int, month: Int, day: Int) = false
+    override fun isOutOfRange(year: Int, month: Int, day: Int): Boolean {
+        if (selectableDays != null) {
+            return !DateUtil.isSelectable(selectableDays, year, month, day)
+        }
+
+        if (DateUtil.isBeforeMin(mMinDate, year, month, day)) {
+            return true
+        } else if (DateUtil.isAfterMax(mMaxDate, year, month, day)) {
+            return true
+        }
+
+        return false
+    }
 
     override fun getFirstDayOfWeek() = mCalendar.firstDayOfWeek
 

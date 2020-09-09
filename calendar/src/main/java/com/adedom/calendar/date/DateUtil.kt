@@ -3,6 +3,7 @@ package com.adedom.calendar.date
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
 internal class DateUtil {
 
@@ -112,6 +113,127 @@ internal class DateUtil {
             val dateEnd: Date = simpleDateFormat.parse(date2)
             val diff = dateEnd.time - dateBegin.time
             return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
+        }
+
+        fun isSelectable(
+            selectableDays: Array<Calendar>,
+            year: Int,
+            month: Int,
+            day: Int
+        ): Boolean {
+            for (c in selectableDays) {
+                if (year < c[Calendar.YEAR]) break
+                if (year > c[Calendar.YEAR]) continue
+                if (month < c[Calendar.MONTH]) break
+                if (month > c[Calendar.MONTH]) continue
+                if (day < c[Calendar.DAY_OF_MONTH]) break
+                if (day > c[Calendar.DAY_OF_MONTH]) continue
+                return true
+            }
+            return false
+        }
+
+        fun isBeforeMin(minDate: Calendar?, year: Int, month: Int, day: Int): Boolean {
+            if (minDate == null) {
+                return false
+            }
+
+            if (year < minDate[Calendar.YEAR]) {
+                return true
+            } else if (year > minDate[Calendar.YEAR]) {
+                return false
+            }
+
+            if (month < minDate[Calendar.MONTH]) {
+                return true
+            } else if (month > minDate[Calendar.MONTH]) {
+                return false
+            }
+
+            return if (day < minDate[Calendar.DAY_OF_MONTH]) {
+                true
+            } else {
+                false
+            }
+        }
+
+        private fun isBeforeMin(minDateCalendar: Calendar?, calendar: Calendar): Boolean {
+            return isBeforeMin(
+                minDateCalendar,
+                calendar[Calendar.YEAR],
+                calendar[Calendar.MONTH],
+                calendar[Calendar.DAY_OF_MONTH]
+            )
+        }
+
+        fun isAfterMax(maxDate: Calendar?, year: Int, month: Int, day: Int): Boolean {
+            if (maxDate == null) {
+                return false
+            }
+
+            if (year > maxDate[Calendar.YEAR]) {
+                return true
+            } else if (year < maxDate[Calendar.YEAR]) {
+                return false
+            }
+
+            if (month > maxDate[Calendar.MONTH]) {
+                return true
+            } else if (month < maxDate[Calendar.MONTH]) {
+                return false
+            }
+
+            return if (day > maxDate[Calendar.DAY_OF_MONTH]) {
+                true
+            } else {
+                false
+            }
+        }
+
+        private fun isAfterMax(maxDate: Calendar?, calendar: Calendar): Boolean {
+            return isAfterMax(
+                maxDate,
+                calendar[Calendar.YEAR],
+                calendar[Calendar.MONTH],
+                calendar[Calendar.DAY_OF_MONTH]
+            )
+        }
+
+        fun setToNearestDate(
+            selectableDays: Array<Calendar>?,
+            minDate: Calendar,
+            maxDate: Calendar,
+            calendar: Calendar
+        ) {
+            if (selectableDays != null) {
+                var distance = Int.MAX_VALUE
+                for (c in selectableDays) {
+                    val newDistance = abs(calendar.compareTo(c))
+                    if (newDistance < distance) distance = newDistance else {
+                        calendar.timeInMillis = c.timeInMillis
+                        break
+                    }
+                }
+                return
+            }
+
+            if (isBeforeMin(minDate, calendar)) {
+                calendar.timeInMillis = minDate.timeInMillis
+                return
+            }
+
+            if (isAfterMax(maxDate, calendar)) {
+                calendar.timeInMillis = maxDate.timeInMillis
+                return
+            }
+        }
+
+        fun adjustDayInMonthIfNeeded(calendar: Calendar) {
+            val day = calendar[Calendar.DAY_OF_MONTH]
+            val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+            if (day > daysInMonth) {
+                calendar[Calendar.DAY_OF_MONTH] = daysInMonth
+            }
         }
     }
 

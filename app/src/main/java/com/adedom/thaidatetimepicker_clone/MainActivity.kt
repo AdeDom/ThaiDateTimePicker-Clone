@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.adedom.calendar.date.DatePickerDialog
 import com.adedom.calendar.date.datePickerDialog
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
@@ -14,11 +15,19 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         setContentView(R.layout.activity_main)
 
         btAnnoDomini.setOnClickListener {
-            datePickerDialog(DatePickerDialog.LOCALE_EN, this)
+            datePickerDialog(
+                this,
+                locale = DatePickerDialog.LOCALE_EN,
+                minDate = Calendar.getInstance()
+            )
         }
 
         btBuddhistEra.setOnClickListener {
-            datePickerDialog(DatePickerDialog.LOCALE_TH, this)
+            datePickerDialog(
+                this,
+                locale = DatePickerDialog.LOCALE_TH,
+                maxDate = Calendar.getInstance()
+            )
         }
     }
 
