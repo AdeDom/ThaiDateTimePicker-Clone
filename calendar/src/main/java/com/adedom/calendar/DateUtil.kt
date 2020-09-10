@@ -1,5 +1,6 @@
-package com.adedom.calendar.date
+package com.adedom.calendar
 
+import android.content.Context
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -64,7 +65,7 @@ internal class DateUtil {
 
             val sdfYear = SimpleDateFormat(YEAR_FORMAT, locale)
             var tempYear = sdfYear.format(calendar.timeInMillis).toInt()
-            val year = if (locale == Locale("th", "TH")) {
+            val year = if (locale == DatePickerDialog.LOCALE_TH) {
                 tempYear += BUDDHIST_OFFSET
                 tempYear
             } else {
@@ -75,18 +76,27 @@ internal class DateUtil {
 
         fun getDayLabel(calendar: Calendar, locale: Locale): String {
             val sdf = SimpleDateFormat(DATE_NAME_FORMAT, locale)
-            return when (locale) {
-                Locale("th", "TH") -> sdf.format(calendar.timeInMillis).replace(".", "")
-                else -> sdf.format(calendar.timeInMillis).substring(0, 1).toUpperCase(locale)
+            return if (locale == DatePickerDialog.LOCALE_TH) {
+                sdf.format(calendar.timeInMillis).replace(".", "")
+            } else {
+                sdf.format(calendar.timeInMillis).substring(0, 1).toUpperCase(locale)
             }
         }
 
-        fun getTextOkFromLocale(locale: Locale): String {
-            return if (locale == DatePickerDialog.LOCALE_TH) "ตกลง" else "OK"
+        fun getTextOkFromLocale(context: Context, locale: Locale): String {
+            return if (locale == DatePickerDialog.LOCALE_TH) {
+                context.getString(R.string.calendar_ok_th)
+            } else {
+                context.getString(R.string.calendar_ok_en)
+            }
         }
 
-        fun getTextCancelFromLocale(locale: Locale): String {
-            return if (locale == DatePickerDialog.LOCALE_TH) "ยกเลิก" else "CANCEL"
+        fun getTextCancelFromLocale(context: Context, locale: Locale): String {
+            return if (locale == DatePickerDialog.LOCALE_TH) {
+                context.getString(R.string.calendar_cancel_th)
+            } else {
+                context.getString(R.string.calendar_cancel_en)
+            }
         }
 
         fun getPeriodDateDiff(

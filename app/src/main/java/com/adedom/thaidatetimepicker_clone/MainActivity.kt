@@ -3,8 +3,8 @@ package com.adedom.thaidatetimepicker_clone
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.adedom.calendar.date.DatePickerDialog
-import com.adedom.calendar.date.datePickerDialog
+import com.adedom.calendar.DatePickerDialog
+import com.adedom.calendar.datePickerDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 

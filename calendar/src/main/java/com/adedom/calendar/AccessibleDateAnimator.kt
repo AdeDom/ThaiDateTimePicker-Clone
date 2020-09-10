@@ -1,4 +1,4 @@
-package com.adedom.calendar.date
+package com.adedom.calendar
 
 import android.content.Context
 import android.text.format.DateUtils

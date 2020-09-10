@@ -1,4 +1,4 @@
-package com.adedom.calendar.date
+package com.adedom.calendar
 
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.adedom.calendar.date
+package com.adedom.calendar
 
 import android.animation.ObjectAnimator
 import android.app.Activity
@@ -156,7 +156,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
             }
             typeface = TypefaceHelper[activity, "Roboto-Medium"]
             setTextColor(mAccentColor)
-            text = DateUtil.getTextOkFromLocale(mLocale)
+            text = DateUtil.getTextOkFromLocale(context, mLocale)
         }
 
         view.findViewById<Button>(R.id.cancel).apply {
@@ -165,7 +165,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
             }
             typeface = TypefaceHelper[activity, "Roboto-Medium"]
             setTextColor(mAccentColor)
-            text = DateUtil.getTextCancelFromLocale(mLocale)
+            text = DateUtil.getTextCancelFromLocale(context, mLocale)
         }
 
         view.findViewById<LinearLayout>(R.id.day_picker_selected_date_layout).apply {
@@ -218,7 +218,8 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
                 }
                 pulseAnimator.start()
 
-                val yearString: CharSequence = SimpleDateFormat(DateUtil.YEAR_FORMAT, mLocale).format(millis)
+                val yearString: CharSequence =
+                    SimpleDateFormat(DateUtil.YEAR_FORMAT, mLocale).format(millis)
                 mAnimator.contentDescription = "$mYearPickerDescription: $yearString"
                 Utils.tryAccessibilityAnnounce(mAnimator, mSelectYear)
             }
@@ -229,7 +230,8 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         val fullDate = SimpleDateFormat(DateUtil.FULL_DATE_FORMAT, mLocale).format(mCalendar.time)
             .replace(".", "") + DateUtil.getLocaleYear(mLocale, mCalendar)
         mTvFullDate.text = fullDate
-        mSelectedMonthTextView.text = SimpleDateFormat(DateUtil.MONTH_FORMAT, mLocale).format(mCalendar.time)
+        mSelectedMonthTextView.text =
+            SimpleDateFormat(DateUtil.MONTH_FORMAT, mLocale).format(mCalendar.time)
         mYearView.text = DateUtil.getLocaleYear(mLocale, mCalendar)
 
         // Accessibility.

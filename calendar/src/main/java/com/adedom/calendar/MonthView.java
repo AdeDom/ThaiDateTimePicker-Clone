@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.adedom.calendar.date;
+package com.adedom.calendar;
 
 import android.content.Context;
 import android.content.res.Resources;

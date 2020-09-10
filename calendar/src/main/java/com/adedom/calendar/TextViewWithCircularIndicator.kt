@@ -1,4 +1,4 @@
-package com.adedom.calendar.date
+package com.adedom.calendar
 
 import android.annotation.SuppressLint
 import android.content.Context
