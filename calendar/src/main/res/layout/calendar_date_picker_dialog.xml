@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/mdtp_date_picker_component_width"
     android:layout_height="wrap_content"
     android:background="@color/mdtp_date_picker_view_animator"
@@ -14,10 +15,89 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@android:color/black" />
 
-    <include layout="@layout/calendar_head" />
+    <!--    head-->
+    <LinearLayout
+        android:id="@+id/day_picker_selected_date_layout"
+        android:layout_width="@dimen/mdtp_date_picker_component_width"
+        android:layout_height="@dimen/mdtp_selected_date_height"
+        android:layout_weight="1"
+        android:background="@color/mdtp_accent_color"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <include layout="@layout/calendar_body" />
+        <TextView
+            android:id="@+id/date_picker_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|top"
+            android:includeFontPadding="false"
+            android:textColor="@drawable/calendar_date_picker_selector"
+            android:textSize="@dimen/mdtp_selected_date_year_size"
+            tools:text="2015" />
 
-    <include layout="@layout/calendar_foot" />
+        <LinearLayout
+            android:id="@+id/date_picker_month_and_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:textColor="@drawable/calendar_date_picker_selector">
+
+            <TextView
+                android:id="@+id/date_picker_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:gravity="center_horizontal|bottom"
+                android:includeFontPadding="false"
+                android:textColor="@drawable/calendar_date_picker_selector"
+                android:textSize="@dimen/mdtp_selected_date_month_size"
+                tools:text="May" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--    body-->
+    <com.adedom.calendar.AccessibleDateAnimator
+        android:id="@+id/animator"
+        android:layout_width="@dimen/mdtp_date_picker_component_width"
+        android:layout_height="@dimen/mdtp_date_picker_view_animator_height"
+        android:gravity="center"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+    <!--    foot-->
+    <LinearLayout
+        android:id="@+id/done_background"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:gravity="end|right"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp">
+
+        <Button
+            android:id="@+id/cancel"
+            style="@style/mdtp_ActionButton.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/calendar_cancel_en" />
+
+        <Button
+            android:id="@+id/ok"
+            style="@style/mdtp_ActionButton.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/calendar_ok_en" />
+
+    </LinearLayout>
 
 </LinearLayout>

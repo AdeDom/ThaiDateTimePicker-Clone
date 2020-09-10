@@ -69,7 +69,7 @@ public class TextViewWithCircularIndicator extends androidx.appcompat.widget.App
     }
 
     /**
-     * Programmatically set the color state list (see mdtp_date_picker_year_selector)
+     * Programmatically set the color state list (see calendar_date_picker_year_selector)
      *
      * @param accentColor pressed state text color
      * @return ColorStateList with pressed state

@@ -1,4 +1,3 @@
 include ':calendar'
-include ':library'
 include ':app'
 rootProject.name = "ThaiDateTimePicker-Clone"
