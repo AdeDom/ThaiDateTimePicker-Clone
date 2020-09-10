@@ -4,7 +4,7 @@
     android:insetTop="6dp">
     <shape android:shape="rectangle">
         <corners android:radius="2dp" />
-        <solid android:color="@color/mdtp_button_selected" />
+        <solid android:color="#33969696" />
         <padding
             android:bottom="4dp"
             android:top="4dp" />
