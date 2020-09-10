@@ -275,7 +275,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     }
 
     override fun getSelectableDays(): Array<Calendar> {
-        return selectableDays!!
+        return selectableDays ?: arrayOf(Calendar.getInstance())
     }
 
     override fun onYearSelected(year: Int) {

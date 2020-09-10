@@ -6,34 +6,89 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvCalendar"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Calendar"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btAnnoDomini"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:text="Anno Domini"
-        app:layout_constraintBottom_toTopOf="@+id/tvCalendar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/tvCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calendar"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
 
-    <Button
-        android:id="@+id/btBuddhistEra"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Buddhist Era"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCalendar" />
+        <TextView
+            android:id="@+id/tvPeriodDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Period Date"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/btAnnoDomini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="Anno Domini"
+            tools:layout_editor_absoluteX="144dp"
+            tools:layout_editor_absoluteY="155dp" />
+
+        <Button
+            android:id="@+id/btBuddhistEra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buddhist Era"
+            tools:layout_editor_absoluteX="142dp"
+            tools:layout_editor_absoluteY="269dp" />
+
+        <Button
+            android:id="@+id/btAccentColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accent Color"
+            tools:layout_editor_absoluteX="144dp"
+            tools:layout_editor_absoluteY="341dp" />
+
+        <Button
+            android:id="@+id/btMinDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Min Date"
+            tools:layout_editor_absoluteX="142dp"
+            tools:layout_editor_absoluteY="516dp" />
+
+        <Button
+            android:id="@+id/btMaxDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max Date"
+            tools:layout_editor_absoluteX="144dp"
+            tools:layout_editor_absoluteY="585dp" />
+
+        <Button
+            android:id="@+id/btHideTitleLabelFullDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hide Title Label Full Date"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="433dp" />
+
+        <Button
+            android:id="@+id/btGoDateStartIntern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go Date Start Intern"
+            tools:layout_editor_absoluteX="151dp"
+            tools:layout_editor_absoluteY="99dp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
