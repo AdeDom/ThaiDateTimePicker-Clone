@@ -10,7 +10,6 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
-import com.adedom.calendar.R
 import java.util.*
 
 internal class YearPickerView(
@@ -111,8 +110,8 @@ internal class YearPickerView(
         )
         layoutParams = frame
         val res = context.resources
-        mViewSize = res.getDimensionPixelOffset(R.dimen.mdtp_date_picker_view_animator_height)
-        mChildSize = res.getDimensionPixelOffset(R.dimen.mdtp_year_label_height)
+        mViewSize = res.getDimensionPixelOffset(R.dimen.calendar_date_picker_view_animator_height)
+        mChildSize = res.getDimensionPixelOffset(R.dimen.calendar_year_label_height)
         isVerticalFadingEdgeEnabled = true
         setFadingEdgeLength(mChildSize / 3)
         init(context)

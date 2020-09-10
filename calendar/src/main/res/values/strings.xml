@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="mdtp_day_picker_description">Month grid of days</string>
-    <string name="mdtp_year_picker_description">Year list</string>
-    <string name="mdtp_select_day">Select month and day</string>
-    <string name="mdtp_select_year">Select year</string>
-    <string name="mdtp_item_is_selected"><xliff:g id="item" example="2013">%1$s</xliff:g> selected</string>
-    <string name="mdtp_sans_serif" translatable="false">sans-serif</string>
-    <string name="mdtp_day_of_week_label_typeface" translatable="false">sans-serif</string>
+    <string name="calendar_day_picker_description">Month grid of days</string>
+    <string name="calendar_year_picker_description">Year list</string>
+    <string name="calendar_select_day">Select month and day</string>
+    <string name="calendar_select_year">Select year</string>
+    <string name="calendar_item_is_selected"><xliff:g id="item" example="2013">%1$s</xliff:g> selected</string>
+    <string name="calendar_sans_serif" translatable="false">sans-serif</string>
+    <string name="calendar_day_of_week_label_typeface" translatable="false">sans-serif</string>
     <string name="calendar_ok_en">OK</string>
     <string name="calendar_ok_th">ตกลง</string>
     <string name="calendar_cancel_en">CANCEL</string>

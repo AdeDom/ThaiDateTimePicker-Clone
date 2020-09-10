@@ -14,9 +14,6 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.adedom.calendar.R
-import com.adedom.calendar.TypefaceHelper
-import com.adedom.calendar.Utils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -115,15 +112,15 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
                 mAccentColor = Utils.getAccentColorFromThemeIfAvailable(it)
             }
 
-            val bgColorResource: Int = R.color.mdtp_date_picker_view_animator
+            val bgColorResource: Int = R.color.calendar_date_picker_view_animator
             val color = ContextCompat.getColor(it, bgColorResource)
             view.setBackgroundColor(color)
         }
 
-        mDayPickerDescription = resources.getString(R.string.mdtp_day_picker_description)
-        mSelectDay = resources.getString(R.string.mdtp_select_day)
-        mYearPickerDescription = resources.getString(R.string.mdtp_year_picker_description)
-        mSelectYear = resources.getString(R.string.mdtp_select_year)
+        mDayPickerDescription = resources.getString(R.string.calendar_day_picker_description)
+        mSelectDay = resources.getString(R.string.calendar_select_day)
+        mYearPickerDescription = resources.getString(R.string.calendar_year_picker_description)
+        mSelectYear = resources.getString(R.string.calendar_select_year)
 
         mAnimator = view.findViewById<AccessibleDateAnimator>(R.id.animator).apply {
             addView(mDayPickerView)

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="270dp"
     android:layout_height="wrap_content"
-    android:background="@color/mdtp_date_picker_view_animator"
+    android:background="@android:color/white"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -21,7 +21,7 @@
         android:layout_width="270dp"
         android:layout_height="140dp"
         android:layout_weight="1"
-        android:background="@color/mdtp_accent_color"
+        android:background="#009688"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -64,7 +64,7 @@
     <com.adedom.calendar.AccessibleDateAnimator
         android:id="@+id/animator"
         android:layout_width="270dp"
-        android:layout_height="@dimen/mdtp_date_picker_view_animator_height"
+        android:layout_height="252dp"
         android:gravity="center"
         android:paddingLeft="8dp"
         android:paddingRight="8dp" />

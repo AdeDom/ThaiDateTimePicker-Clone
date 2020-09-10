@@ -59,7 +59,7 @@ internal class Utils {
                 )
             ) {
                 typedValue.data
-            } else ContextCompat.getColor(context, R.color.mdtp_accent_color)
+            } else ContextCompat.getColor(context, R.color.calendar_accent_color)
         }
     }
 

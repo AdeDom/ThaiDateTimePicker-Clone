@@ -10,7 +10,6 @@ import android.graphics.Paint.Align
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import com.adedom.calendar.R
 import kotlin.math.min
 
 internal class TextViewWithCircularIndicator(
@@ -86,8 +85,8 @@ internal class TextViewWithCircularIndicator(
     }
 
     init {
-        mCircleColor = ContextCompat.getColor(context, R.color.mdtp_accent_color)
-        mItemIsSelectedText = context.resources.getString(R.string.mdtp_item_is_selected)
+        mCircleColor = ContextCompat.getColor(context, R.color.calendar_accent_color)
+        mItemIsSelectedText = context.resources.getString(R.string.calendar_item_is_selected)
 
         init()
     }

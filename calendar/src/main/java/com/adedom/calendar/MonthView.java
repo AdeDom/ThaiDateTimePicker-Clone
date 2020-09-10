@@ -38,9 +38,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.customview.widget.ExploreByTouchHelper;
 
-import com.adedom.calendar.R;
-import com.adedom.calendar.TypefaceHelper;
-
 import java.security.InvalidParameterException;
 import java.util.Calendar;
 import java.util.Formatter;
@@ -201,29 +198,29 @@ public abstract class MonthView extends View {
         mDayLabelCalendar = Calendar.getInstance();
         mCalendar = Calendar.getInstance();
 
-        mDayOfWeekTypeface = res.getString(R.string.mdtp_day_of_week_label_typeface);
-        mMonthTitleTypeface = res.getString(R.string.mdtp_sans_serif);
+        mDayOfWeekTypeface = res.getString(R.string.calendar_day_of_week_label_typeface);
+        mMonthTitleTypeface = res.getString(R.string.calendar_sans_serif);
 
-        mDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_normal);
-        mMonthDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_month_day);
-        mDisabledDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_disabled);
-        mHighlightedDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_highlighted);
+        mDayTextColor = ContextCompat.getColor(context, R.color.calendar_date_picker_text_normal);
+        mMonthDayTextColor = ContextCompat.getColor(context, R.color.calendar_date_picker_month_day);
+        mDisabledDayTextColor = ContextCompat.getColor(context, R.color.calendar_date_picker_text_disabled);
+        mHighlightedDayTextColor = ContextCompat.getColor(context, R.color.calendar_date_picker_text_highlighted);
 
-        mSelectedDayTextColor = ContextCompat.getColor(context, R.color.mdtp_white);
+        mSelectedDayTextColor = ContextCompat.getColor(context, R.color.calendar_white);
         mTodayNumberColor = mController.getAccentColor();
-        mMonthTitleColor = ContextCompat.getColor(context, R.color.mdtp_white);
+        mMonthTitleColor = ContextCompat.getColor(context, R.color.calendar_white);
 
         mStringBuilder = new StringBuilder(50);
         mFormatter = new Formatter(mStringBuilder, Locale.getDefault());
 
-        MINI_DAY_NUMBER_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.mdtp_day_number_size);
-        MONTH_LABEL_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.mdtp_month_label_size);
-        MONTH_DAY_LABEL_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.mdtp_month_day_label_text_size);
-        MONTH_HEADER_SIZE = res.getDimensionPixelOffset(R.dimen.mdtp_month_list_item_header_height);
+        MINI_DAY_NUMBER_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.calendar_day_number_size);
+        MONTH_LABEL_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.calendar_month_label_size);
+        MONTH_DAY_LABEL_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.calendar_month_day_label_text_size);
+        MONTH_HEADER_SIZE = res.getDimensionPixelOffset(R.dimen.calendar_month_list_item_header_height);
         DAY_SELECTED_CIRCLE_SIZE = res
-                .getDimensionPixelSize(R.dimen.mdtp_day_number_select_circle_radius);
+                .getDimensionPixelSize(R.dimen.calendar_day_number_select_circle_radius);
 
-        mRowHeight = (res.getDimensionPixelOffset(R.dimen.mdtp_date_picker_view_animator_height)
+        mRowHeight = (res.getDimensionPixelOffset(R.dimen.calendar_date_picker_view_animator_height)
                 - getMonthHeaderSize()) / MAX_NUM_ROWS;
 
         // Set up accessibility components.
@@ -776,7 +773,7 @@ public abstract class MonthView extends View {
                     mTempCalendar.getTimeInMillis());
 
             if (day == mSelectedDay) {
-                return getContext().getString(R.string.mdtp_item_is_selected, date);
+                return getContext().getString(R.string.calendar_item_is_selected, date);
             }
 
             return date;
