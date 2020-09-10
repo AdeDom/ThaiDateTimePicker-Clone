@@ -6,6 +6,32 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import java.util.*
 
+internal class SimpleDayPickerView : DayPickerView {
+
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+
+    constructor(context: Context?, controller: DatePickerController?, locale: Locale) : super(context, controller, locale)
+
+    override fun createMonthAdapter(
+        context: Context?,
+        controller: DatePickerController?,
+        locale: Locale
+    ): MonthAdapter {
+        return SimpleMonthAdapter(context, controller, locale)
+    }
+
+}
+
+internal class SimpleMonthAdapter(
+    context: Context?, controller: DatePickerController?, private val mLocale: Locale
+) : MonthAdapter(context, controller) {
+
+    override fun createMonthView(context: Context?): MonthView {
+        return SimpleMonthView(context, null, mController, mLocale)
+    }
+
+}
+
 internal class SimpleMonthView(
     context: Context?, attr: AttributeSet?, controller: DatePickerController?, locale: Locale
 ) : MonthView(context, attr, controller, locale) {
