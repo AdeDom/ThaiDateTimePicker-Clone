@@ -33,8 +33,6 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
-import com.adedom.calendar.Utils;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -508,7 +506,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
         }
 
         // Go to that month.
-        Utils.Companion.tryAccessibilityAnnounce(this, getMonthAndYearString(day));
+        DateUtil.Companion.tryAccessibilityAnnounce(this, getMonthAndYearString(day));
         goTo(day, true, false, true);
         mPerformingScroll = true;
         return true;

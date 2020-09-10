@@ -109,7 +109,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
             mYearPickerView = YearPickerView(it, this, mLocale)
 
             if (mAccentColor == -1) {
-                mAccentColor = Utils.getAccentColorFromThemeIfAvailable(it)
+                mAccentColor = DateUtil.getAccentColorFromThemeIfAvailable(it)
             }
 
             val bgColorResource: Int = R.color.calendar_date_picker_view_animator
@@ -151,7 +151,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
                 dismiss()
             }
-            typeface = TypefaceHelper[activity, "Roboto-Medium"]
+            typeface = DateUtil[activity, "Roboto-Medium"]
             setTextColor(mAccentColor)
             text = DateUtil.getTextOkFromLocale(context, mLocale)
         }
@@ -160,7 +160,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
             setOnClickListener {
                 dialog?.cancel()
             }
-            typeface = TypefaceHelper[activity, "Roboto-Medium"]
+            typeface = DateUtil[activity, "Roboto-Medium"]
             setTextColor(mAccentColor)
             text = DateUtil.getTextCancelFromLocale(context, mLocale)
         }
@@ -181,7 +181,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         val pulseAnimator: ObjectAnimator
         when (viewIndex) {
             MONTH_AND_DAY_VIEW -> {
-                pulseAnimator = Utils.getPulseAnimator(mMonthAndDayView, 0.9f, 1.05f)
+                pulseAnimator = DateUtil.getPulseAnimator(mMonthAndDayView, 0.9f, 1.05f)
                 if (mDelayAnimation) {
                     pulseAnimator.startDelay = ANIMATION_DELAY
                     mDelayAnimation = false
@@ -198,10 +198,10 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
                 val flags = DateUtils.FORMAT_SHOW_DATE
                 val dayString = DateUtils.formatDateTime(activity, millis, flags)
                 mAnimator.contentDescription = "$mDayPickerDescription: $dayString"
-                Utils.tryAccessibilityAnnounce(mAnimator, mSelectDay)
+                DateUtil.tryAccessibilityAnnounce(mAnimator, mSelectDay)
             }
             YEAR_VIEW -> {
-                pulseAnimator = Utils.getPulseAnimator(mYearView, 0.85f, 1.1f)
+                pulseAnimator = DateUtil.getPulseAnimator(mYearView, 0.85f, 1.1f)
                 if (mDelayAnimation) {
                     pulseAnimator.startDelay = ANIMATION_DELAY
                     mDelayAnimation = false
@@ -218,7 +218,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
                 val yearString: CharSequence =
                     SimpleDateFormat(DateUtil.YEAR_FORMAT, mLocale).format(millis)
                 mAnimator.contentDescription = "$mYearPickerDescription: $yearString"
-                Utils.tryAccessibilityAnnounce(mAnimator, mSelectYear)
+                DateUtil.tryAccessibilityAnnounce(mAnimator, mSelectYear)
             }
         }
     }
@@ -241,7 +241,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         if (announce) {
             flags = DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR
             val fullDateText = DateUtils.formatDateTime(activity, millis, flags)
-            Utils.tryAccessibilityAnnounce(mAnimator, fullDateText)
+            DateUtil.tryAccessibilityAnnounce(mAnimator, fullDateText)
         }
     }
 
