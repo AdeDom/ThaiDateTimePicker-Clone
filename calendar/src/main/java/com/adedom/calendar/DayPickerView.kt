@@ -13,7 +13,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.AbsListView
 import android.widget.ListView
-import com.adedom.calendar.DateUtil.Companion.tryAccessibilityAnnounce
+import com.adedom.calendar.DateUtil.tryAccessibilityAnnounce
 import com.adedom.calendar.MonthAdapter.Companion.CalendarDay
 import java.text.SimpleDateFormat
 import java.util.*

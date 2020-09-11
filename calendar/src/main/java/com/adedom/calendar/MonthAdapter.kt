@@ -13,18 +13,18 @@ abstract class MonthAdapter(
     protected val mController: DatePickerController
 ) : BaseAdapter(), MonthView.OnDayClickListener {
 
-    private var mSelectedDay: CalendarDay? = null
+    private lateinit var mSelectedDay: CalendarDay
 
-    fun setSelectedDay(day: CalendarDay?) {
+    fun setSelectedDay(day: CalendarDay) {
         mSelectedDay = day
         notifyDataSetChanged()
     }
 
-    fun getSelectedDay(): CalendarDay? {
+    fun getSelectedDay(): CalendarDay {
         return mSelectedDay
     }
 
-    protected fun init() {
+    private fun init() {
         mSelectedDay = CalendarDay(System.currentTimeMillis())
     }
 
@@ -71,7 +71,7 @@ abstract class MonthAdapter(
 
         var selectedDay = -1
         if (isSelectedDayInMonth(year, month)) {
-            selectedDay = mSelectedDay!!.day
+            selectedDay = mSelectedDay.day
         }
 
         v.reuse()
@@ -88,26 +88,23 @@ abstract class MonthAdapter(
     abstract fun createMonthView(context: Context?): MonthView
 
     private fun isSelectedDayInMonth(year: Int, month: Int): Boolean {
-        return mSelectedDay?.year == year && mSelectedDay?.month == month
+        return mSelectedDay.year == year && mSelectedDay.month == month
     }
 
     override fun onDayClick(view: MonthView?, day: CalendarDay?) {
         day?.let { onDayTapped(it) }
     }
 
-    protected fun onDayTapped(day: CalendarDay?) {
-        if (day != null)
-            mController.onDayOfMonthSelected(day.year, day.month, day.day)
+    private fun onDayTapped(day: CalendarDay) {
+        mController.onDayOfMonthSelected(day.year, day.month, day.day)
         setSelectedDay(day)
     }
 
     companion object {
-        private const val TAG = "SimpleMonthAdapter"
-        protected var WEEK_7_OVERHANG_HEIGHT = 7
         const val MONTHS_IN_YEAR = 12
 
         class CalendarDay {
-            private var calendar: Calendar? = null
+            private lateinit var calendar: Calendar
             var year = 0
             var month = 0
             var day = 0
@@ -136,20 +133,18 @@ abstract class MonthAdapter(
                 day = date.day
             }
 
-            fun setDay(year: Int, month: Int, day: Int) {
+            private fun setDay(year: Int, month: Int, day: Int) {
                 this.year = year
                 this.month = month
                 this.day = day
             }
 
             private fun setTime(timeInMillis: Long) {
-                if (calendar == null) {
-                    calendar = Calendar.getInstance()
-                }
-                calendar?.timeInMillis = timeInMillis
-                month = calendar!![Calendar.MONTH]
-                year = calendar!![Calendar.YEAR]
-                day = calendar!![Calendar.DAY_OF_MONTH]
+                calendar = Calendar.getInstance()
+                calendar.timeInMillis = timeInMillis
+                month = calendar[Calendar.MONTH]
+                year = calendar[Calendar.YEAR]
+                day = calendar[Calendar.DAY_OF_MONTH]
             }
         }
     }

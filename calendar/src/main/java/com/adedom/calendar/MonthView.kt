@@ -17,8 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.customview.widget.ExploreByTouchHelper
-import com.adedom.calendar.DateUtil.Companion.getDayLabel
-import com.adedom.calendar.DateUtil.Companion.getMonthAndYear
+import com.adedom.calendar.DateUtil.getDayLabel
+import com.adedom.calendar.DateUtil.getMonthAndYear
 import com.adedom.calendar.MonthAdapter.Companion.CalendarDay
 import java.security.InvalidParameterException
 import java.util.*
@@ -26,7 +26,7 @@ import java.util.*
 abstract class MonthView : View {
 
     protected var mController: DatePickerController
-    private var mLocale: Locale? = null
+    private var mLocale: Locale
 
     protected var mEdgePadding = 0
 
@@ -34,9 +34,9 @@ abstract class MonthView : View {
     private var mMonthTitleTypeface: String? = null
 
     protected lateinit var mMonthNumPaint: Paint
-    protected var mMonthTitlePaint: Paint? = null
+    protected lateinit var mMonthTitlePaint: Paint
     internal lateinit var mSelectedCirclePaint: Paint
-    protected var mMonthDayLabelPaint: Paint? = null
+    protected lateinit var mMonthDayLabelPaint: Paint
 
     private var mFormatter: Formatter? = null
     private var mStringBuilder: StringBuilder? = null
@@ -57,9 +57,9 @@ abstract class MonthView : View {
     protected var mSelectedLeft = -1
     protected var mSelectedRight = -1
 
-    private var mCalendar: Calendar? = null
-    protected var mDayLabelCalendar: Calendar? = null
-    private var mTouchHelper: MonthViewTouchHelper? = null
+    private var mCalendar: Calendar
+    protected var mDayLabelCalendar: Calendar
+    private var mTouchHelper: MonthViewTouchHelper
 
     protected var mNumRows = DEFAULT_NUM_ROWS
 
@@ -79,7 +79,7 @@ abstract class MonthView : View {
         context: Context?,
         attr: AttributeSet?,
         controller: DatePickerController,
-        locale: Locale?,
+        locale: Locale,
     ) : super(context, attr) {
         mLocale = locale
 
@@ -134,7 +134,7 @@ abstract class MonthView : View {
         mController = controller
     }
 
-    protected fun getMonthViewTouchHelper(): MonthViewTouchHelper? {
+    protected fun getMonthViewTouchHelper(): MonthViewTouchHelper {
         return MonthViewTouchHelper(this)
     }
 
@@ -149,7 +149,7 @@ abstract class MonthView : View {
     }
 
     override fun dispatchHoverEvent(event: MotionEvent): Boolean {
-        return if (mTouchHelper!!.dispatchHoverEvent(event)) {
+        return if (mTouchHelper.dispatchHoverEvent(event)) {
             true
         } else super.dispatchHoverEvent(event)
     }
@@ -168,13 +168,13 @@ abstract class MonthView : View {
 
     protected fun initView() {
         mMonthTitlePaint = Paint()
-        mMonthTitlePaint?.isFakeBoldText = true
-        mMonthTitlePaint?.isAntiAlias = true
-        mMonthTitlePaint?.textSize = MONTH_LABEL_TEXT_SIZE.toFloat()
-        mMonthTitlePaint?.typeface = Typeface.create(mMonthTitleTypeface, Typeface.BOLD)
-        mMonthTitlePaint?.color = mDayTextColor
-        mMonthTitlePaint?.textAlign = Align.CENTER
-        mMonthTitlePaint?.style = Paint.Style.FILL
+        mMonthTitlePaint.isFakeBoldText = true
+        mMonthTitlePaint.isAntiAlias = true
+        mMonthTitlePaint.textSize = MONTH_LABEL_TEXT_SIZE.toFloat()
+        mMonthTitlePaint.typeface = Typeface.create(mMonthTitleTypeface, Typeface.BOLD)
+        mMonthTitlePaint.color = mDayTextColor
+        mMonthTitlePaint.textAlign = Align.CENTER
+        mMonthTitlePaint.style = Paint.Style.FILL
 
         mSelectedCirclePaint = Paint()
         mSelectedCirclePaint.isFakeBoldText = true
@@ -185,13 +185,13 @@ abstract class MonthView : View {
         mSelectedCirclePaint.alpha = SELECTED_CIRCLE_ALPHA
 
         mMonthDayLabelPaint = Paint()
-        mMonthDayLabelPaint?.isAntiAlias = true
-        mMonthDayLabelPaint?.textSize = MONTH_DAY_LABEL_TEXT_SIZE.toFloat()
-        mMonthDayLabelPaint?.color = mMonthDayTextColor
-        mMonthDayLabelPaint?.typeface = DateUtil[context, "Roboto-Medium"]
-        mMonthDayLabelPaint?.style = Paint.Style.FILL
-        mMonthDayLabelPaint?.textAlign = Align.CENTER
-        mMonthDayLabelPaint?.isFakeBoldText = true
+        mMonthDayLabelPaint.isAntiAlias = true
+        mMonthDayLabelPaint.textSize = MONTH_DAY_LABEL_TEXT_SIZE.toFloat()
+        mMonthDayLabelPaint.color = mMonthDayTextColor
+        mMonthDayLabelPaint.typeface = DateUtil[context, "Roboto-Medium"]
+        mMonthDayLabelPaint.style = Paint.Style.FILL
+        mMonthDayLabelPaint.textAlign = Align.CENTER
+        mMonthDayLabelPaint.isFakeBoldText = true
 
         mMonthNumPaint = Paint()
         mMonthNumPaint.isAntiAlias = true
@@ -232,18 +232,18 @@ abstract class MonthView : View {
         mHasToday = false
         mToday = -1
 
-        mCalendar!![Calendar.MONTH] = mMonth
-        mCalendar!![Calendar.YEAR] = mYear
-        mCalendar!![Calendar.DAY_OF_MONTH] = 1
-        mDayOfWeekStart = mCalendar!![Calendar.DAY_OF_WEEK]
+        mCalendar[Calendar.MONTH] = mMonth
+        mCalendar[Calendar.YEAR] = mYear
+        mCalendar[Calendar.DAY_OF_MONTH] = 1
+        mDayOfWeekStart = mCalendar[Calendar.DAY_OF_WEEK]
 
         mWeekStart = if (params.containsKey(VIEW_PARAMS_WEEK_START)) {
             params[VIEW_PARAMS_WEEK_START]!!
         } else {
-            mCalendar!!.firstDayOfWeek
+            mCalendar.firstDayOfWeek
         }
 
-        mNumCells = mCalendar!!.getActualMaximum(Calendar.DAY_OF_MONTH)
+        mNumCells = mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         for (i in 0 until mNumCells) {
             val day = i + 1
             if (sameDay(day, today)) {
@@ -253,7 +253,7 @@ abstract class MonthView : View {
         }
         mNumRows = calculateNumRows()
 
-        mTouchHelper?.invalidateRoot()
+        mTouchHelper.invalidateRoot()
     }
 
     fun setSelectedDay(day: Int) {
@@ -288,7 +288,7 @@ abstract class MonthView : View {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         mWidth = w
 
-        mTouchHelper?.invalidateRoot()
+        mTouchHelper.invalidateRoot()
     }
 
     fun getMonth(): Int {
@@ -310,7 +310,7 @@ abstract class MonthView : View {
     protected fun drawMonthTitle(canvas: Canvas) {
         val x = (mWidth + 2 * mEdgePadding) / 2
         val y = (getMonthHeaderSize() - MONTH_DAY_LABEL_TEXT_SIZE) / 2
-        canvas.drawText(getMonthAndYearString(), x.toFloat(), y.toFloat(), mMonthTitlePaint!!)
+        canvas.drawText(getMonthAndYearString(), x.toFloat(), y.toFloat(), mMonthTitlePaint)
     }
 
     protected fun drawMonthDayLabels(canvas: Canvas) {
@@ -321,10 +321,10 @@ abstract class MonthView : View {
             val x = (2 * i + 1) * dayWidthHalf + mEdgePadding
 
             val calendarDay = (i + mWeekStart) % mNumDays
-            mDayLabelCalendar!![Calendar.DAY_OF_WEEK] = calendarDay
+            mDayLabelCalendar[Calendar.DAY_OF_WEEK] = calendarDay
 
-            val dayLabel = getDayLabel(mDayLabelCalendar, mLocale!!)
-            canvas.drawText(dayLabel, x.toFloat(), y.toFloat(), mMonthDayLabelPaint!!)
+            val dayLabel = getDayLabel(mDayLabelCalendar, mLocale)
+            canvas.drawText(dayLabel, x.toFloat(), y.toFloat(), mMonthDayLabelPaint)
         }
     }
 
@@ -404,7 +404,7 @@ abstract class MonthView : View {
             )
         }
 
-        mTouchHelper?.sendEventForVirtualView(day, AccessibilityEvent.TYPE_VIEW_CLICKED)
+        mTouchHelper.sendEventForVirtualView(day, AccessibilityEvent.TYPE_VIEW_CLICKED)
     }
 
     protected fun isHighlighted(year: Int, month: Int, day: Int): Boolean {
@@ -422,21 +422,21 @@ abstract class MonthView : View {
     }
 
     fun getAccessibilityFocus(): CalendarDay? {
-        val day = mTouchHelper!!.focusedVirtualView
+        val day = mTouchHelper.focusedVirtualView
         return if (day >= 0) {
             CalendarDay(mYear, mMonth, day)
         } else null
     }
 
     fun clearAccessibilityFocus() {
-        mTouchHelper?.clearFocusedVirtualView()
+        mTouchHelper.clearFocusedVirtualView()
     }
 
     fun restoreAccessibilityFocus(day: CalendarDay): Boolean {
         if (day.year != mYear || day.month != mMonth || day.day > mNumCells) {
             return false
         }
-        mTouchHelper?.focusedVirtualView = day.day
+        mTouchHelper.focusedVirtualView = day.day
         return true
     }
 
