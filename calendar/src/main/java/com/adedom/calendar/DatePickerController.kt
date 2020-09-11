@@ -1,5 +1,6 @@
 package com.adedom.calendar
 
+import com.adedom.calendar.MonthAdapter.Companion.CalendarDay
 import java.util.*
 
 interface DatePickerController {
@@ -12,7 +13,7 @@ interface DatePickerController {
 
     fun unregisterOnDateChangedListener(listener: DatePickerDialog.OnDateChangedListener)
 
-    fun getSelectedDay(): MonthAdapter.CalendarDay
+    fun getSelectedDay(): CalendarDay
 
     fun getAccentColor(): Int
 

@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import com.adedom.calendar.MonthAdapter.Companion.CalendarDay
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -297,7 +298,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         updateDisplay(true)
     }
 
-    override fun getSelectedDay() = MonthAdapter.CalendarDay(mCalendar)
+    override fun getSelectedDay() = CalendarDay(mCalendar)
 
     override fun getMinYear(): Int {
         if (selectableDays != null) return selectableDays[0].get(Calendar.YEAR)

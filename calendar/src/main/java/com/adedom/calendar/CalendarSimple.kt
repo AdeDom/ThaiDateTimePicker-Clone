@@ -10,11 +10,15 @@ internal class SimpleDayPickerView : DayPickerView {
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context?, controller: DatePickerController?, locale: Locale) : super(context, controller, locale)
+    constructor(
+        context: Context?,
+        controller: DatePickerController,
+        locale: Locale
+    ) : super(context, controller, locale)
 
     override fun createMonthAdapter(
         context: Context?,
-        controller: DatePickerController?,
+        controller: DatePickerController,
         locale: Locale
     ): MonthAdapter {
         return SimpleMonthAdapter(context, controller, locale)
@@ -23,7 +27,7 @@ internal class SimpleDayPickerView : DayPickerView {
 }
 
 internal class SimpleMonthAdapter(
-    context: Context?, controller: DatePickerController?, private val mLocale: Locale
+    context: Context?, controller: DatePickerController, private val mLocale: Locale
 ) : MonthAdapter(context, controller) {
 
     override fun createMonthView(context: Context?): MonthView {
@@ -33,7 +37,7 @@ internal class SimpleMonthAdapter(
 }
 
 internal class SimpleMonthView(
-    context: Context?, attr: AttributeSet?, controller: DatePickerController?, locale: Locale
+    context: Context?, attr: AttributeSet?, controller: DatePickerController, locale: Locale
 ) : MonthView(context, attr, controller, locale) {
 
     override fun drawMonthDay(
