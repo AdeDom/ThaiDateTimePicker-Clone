@@ -72,12 +72,12 @@ internal class DateUtil {
             return if (locale == DatePickerDialog.LOCALE_TH) year.minus(BUDDHIST_OFFSET) else year
         }
 
-        fun getMonthAndYear(calendar: Calendar, locale: Locale): String {
+        fun getMonthAndYear(calendar: Calendar?, locale: Locale?): String {
             val sdfMonth = SimpleDateFormat(MONTH_FORMAT, locale)
-            val month = sdfMonth.format(calendar.timeInMillis)
+            val month = sdfMonth.format(calendar?.timeInMillis)
 
             val sdfYear = SimpleDateFormat(YEAR_FORMAT, locale)
-            var tempYear = sdfYear.format(calendar.timeInMillis).toInt()
+            var tempYear = sdfYear.format(calendar?.timeInMillis).toInt()
             val year = if (locale == DatePickerDialog.LOCALE_TH) {
                 tempYear += BUDDHIST_OFFSET
                 tempYear
@@ -87,12 +87,12 @@ internal class DateUtil {
             return "$month $year"
         }
 
-        fun getDayLabel(calendar: Calendar, locale: Locale): String {
+        fun getDayLabel(calendar: Calendar?, locale: Locale): String {
             val sdf = SimpleDateFormat(DATE_NAME_FORMAT, locale)
             return if (locale == DatePickerDialog.LOCALE_TH) {
-                sdf.format(calendar.timeInMillis).replace(".", "")
+                sdf.format(calendar?.timeInMillis).replace(".", "")
             } else {
-                sdf.format(calendar.timeInMillis).substring(0, 1).toUpperCase(locale)
+                sdf.format(calendar?.timeInMillis).substring(0, 1).toUpperCase(locale)
             }
         }
 

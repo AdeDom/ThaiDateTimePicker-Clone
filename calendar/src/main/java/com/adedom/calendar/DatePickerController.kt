@@ -2,7 +2,7 @@ package com.adedom.calendar
 
 import java.util.*
 
-internal interface DatePickerController {
+interface DatePickerController {
 
     fun onYearSelected(year: Int)
 
