@@ -8,10 +8,10 @@ import android.widget.AbsListView
 import android.widget.BaseAdapter
 import java.util.*
 
-abstract class MonthAdapter(
+abstract class CustomCalendarMonthAdapter(
     private val mContext: Context?,
     protected val mController: CustomCalendarPickerController
-) : BaseAdapter(), MonthView.OnDayClickListener {
+) : BaseAdapter(), CustomCalendarMonthView.OnDayClickListener {
 
     private lateinit var mSelectedDay: CalendarDay
 
@@ -46,10 +46,10 @@ abstract class MonthAdapter(
 
     @SuppressLint("NewApi")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val v: MonthView
+        val v: CustomCalendarMonthView
         var drawingParams: HashMap<String, Int>? = null
         if (convertView != null) {
-            v = convertView as MonthView
+            v = convertView as CustomCalendarMonthView
             drawingParams = v.tag as HashMap<String, Int>
         } else {
             v = createMonthView(mContext)
@@ -76,22 +76,22 @@ abstract class MonthAdapter(
 
         v.reuse()
 
-        drawingParams[MonthView.VIEW_PARAMS_SELECTED_DAY] = selectedDay
-        drawingParams[MonthView.VIEW_PARAMS_YEAR] = year
-        drawingParams[MonthView.VIEW_PARAMS_MONTH] = month
-        drawingParams[MonthView.VIEW_PARAMS_WEEK_START] = mController.getFirstDayOfWeek()
+        drawingParams[CustomCalendarMonthView.VIEW_PARAMS_SELECTED_DAY] = selectedDay
+        drawingParams[CustomCalendarMonthView.VIEW_PARAMS_YEAR] = year
+        drawingParams[CustomCalendarMonthView.VIEW_PARAMS_MONTH] = month
+        drawingParams[CustomCalendarMonthView.VIEW_PARAMS_WEEK_START] = mController.getFirstDayOfWeek()
         v.setMonthParams(drawingParams)
         v.invalidate()
         return v
     }
 
-    abstract fun createMonthView(context: Context?): MonthView
+    abstract fun createMonthView(context: Context?): CustomCalendarMonthView
 
     private fun isSelectedDayInMonth(year: Int, month: Int): Boolean {
         return mSelectedDay.year == year && mSelectedDay.month == month
     }
 
-    override fun onDayClick(view: MonthView?, day: CalendarDay?) {
+    override fun onDayClick(view: CustomCalendarMonthView?, day: CalendarDay?) {
         day?.let { onDayTapped(it) }
     }
 

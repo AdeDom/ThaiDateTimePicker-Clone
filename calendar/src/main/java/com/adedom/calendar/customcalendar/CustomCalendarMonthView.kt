@@ -20,11 +20,11 @@ import androidx.customview.widget.ExploreByTouchHelper
 import com.adedom.calendar.R
 import com.adedom.calendar.customcalendar.CustomCalendarUtil.getDayLabel
 import com.adedom.calendar.customcalendar.CustomCalendarUtil.getMonthAndYear
-import com.adedom.calendar.customcalendar.MonthAdapter.Companion.CalendarDay
+import com.adedom.calendar.customcalendar.CustomCalendarMonthAdapter.Companion.CalendarDay
 import java.security.InvalidParameterException
 import java.util.*
 
-abstract class MonthView : View {
+abstract class CustomCalendarMonthView : View {
 
     protected var mController: CustomCalendarPickerController
     private var mLocale: Locale
@@ -449,7 +449,7 @@ abstract class MonthView : View {
         constructor(host: View) : super(host)
 
         fun setFocusedVirtualView(virtualViewId: Int) {
-            getAccessibilityNodeProvider(this@MonthView).performAction(
+            getAccessibilityNodeProvider(this@CustomCalendarMonthView).performAction(
                 virtualViewId,
                 AccessibilityNodeInfoCompat.ACTION_ACCESSIBILITY_FOCUS,
                 null
@@ -459,7 +459,7 @@ abstract class MonthView : View {
         fun clearFocusedVirtualView() {
             val focusedVirtualView = focusedVirtualView
             if (focusedVirtualView != INVALID_ID) {
-                getAccessibilityNodeProvider(this@MonthView).performAction(
+                getAccessibilityNodeProvider(this@CustomCalendarMonthView).performAction(
                     focusedVirtualView,
                     AccessibilityNodeInfoCompat.ACTION_CLEAR_ACCESSIBILITY_FOCUS,
                     null
@@ -538,7 +538,7 @@ abstract class MonthView : View {
     }
 
     interface OnDayClickListener {
-        fun onDayClick(view: MonthView?, day: CalendarDay?)
+        fun onDayClick(view: CustomCalendarMonthView?, day: CalendarDay?)
     }
 
     companion object {

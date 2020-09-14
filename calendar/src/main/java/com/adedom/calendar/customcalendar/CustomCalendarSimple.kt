@@ -6,7 +6,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import java.util.*
 
-internal class SimpleDayPickerView : DayPickerView {
+internal class SimpleDayPickerView : CustomCalendarDayPickerView {
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
@@ -20,7 +20,7 @@ internal class SimpleDayPickerView : DayPickerView {
         context: Context?,
         controller: CustomCalendarPickerController,
         locale: Locale
-    ): MonthAdapter {
+    ): CustomCalendarMonthAdapter {
         return SimpleMonthAdapter(context, controller, locale)
     }
 
@@ -28,9 +28,9 @@ internal class SimpleDayPickerView : DayPickerView {
 
 internal class SimpleMonthAdapter(
     context: Context?, controller: CustomCalendarPickerController, private val mLocale: Locale
-) : MonthAdapter(context, controller) {
+) : CustomCalendarMonthAdapter(context, controller) {
 
-    override fun createMonthView(context: Context?): MonthView {
+    override fun createMonthView(context: Context?): CustomCalendarMonthView {
         return SimpleMonthView(context, null, mController, mLocale)
     }
 
@@ -38,7 +38,7 @@ internal class SimpleMonthAdapter(
 
 internal class SimpleMonthView(
     context: Context?, attr: AttributeSet?, controller: CustomCalendarPickerController, locale: Locale
-) : MonthView(context, attr, controller, locale) {
+) : CustomCalendarMonthView(context, attr, controller, locale) {
 
     override fun drawMonthDay(
         canvas: Canvas?,

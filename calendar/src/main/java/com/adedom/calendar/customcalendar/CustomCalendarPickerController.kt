@@ -1,6 +1,6 @@
 package com.adedom.calendar.customcalendar
 
-import com.adedom.calendar.customcalendar.MonthAdapter.Companion.CalendarDay
+import com.adedom.calendar.customcalendar.CustomCalendarMonthAdapter.Companion.CalendarDay
 import java.util.*
 
 interface CustomCalendarPickerController {

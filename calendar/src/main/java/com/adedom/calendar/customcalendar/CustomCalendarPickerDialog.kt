@@ -14,7 +14,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.adedom.calendar.customcalendar.MonthAdapter.Companion.CalendarDay
+import com.adedom.calendar.customcalendar.CustomCalendarMonthAdapter.Companion.CalendarDay
 import com.adedom.calendar.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,7 +38,7 @@ class CustomCalendarPickerDialog : DialogFragment(), CustomCalendarPickerControl
     private lateinit var mMonthAndDayView: LinearLayout
     private lateinit var mSelectedMonthTextView: TextView
     private lateinit var mYearView: TextView
-    private var mDayPickerView: DayPickerView? = null
+    private var mDayPickerView: CustomCalendarDayPickerView? = null
     private lateinit var mYearPickerView: YearPickerView
 
     private var mCurrentView = UNINITIALIZED

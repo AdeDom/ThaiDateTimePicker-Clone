@@ -14,13 +14,13 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.AbsListView
 import android.widget.ListView
 import com.adedom.calendar.customcalendar.CustomCalendarUtil.tryAccessibilityAnnounce
-import com.adedom.calendar.customcalendar.MonthAdapter.Companion.CalendarDay
+import com.adedom.calendar.customcalendar.CustomCalendarMonthAdapter.Companion.CalendarDay
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
+abstract class CustomCalendarDayPickerView : ListView, AbsListView.OnScrollListener,
     CustomCalendarPickerDialog.OnDateChangedListener {
 
     protected var mNumWeeks = 6
@@ -32,7 +32,7 @@ abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
     protected var mHandler: Handler? = null
 
     protected var mSelectedDay = CalendarDay()
-    protected var mAdapter: MonthAdapter? = null
+    protected var mAdapter: CustomCalendarMonthAdapter? = null
 
     protected var mTempDay = CalendarDay()
 
@@ -97,7 +97,7 @@ abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
         context: Context?,
         controller: CustomCalendarPickerController,
         locale: Locale,
-    ): MonthAdapter
+    ): CustomCalendarMonthAdapter
 
     protected fun setUpListView() {
         cacheColorHint = 0
@@ -123,7 +123,7 @@ abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
 
         mTempDay.set(day)
         val position =
-            (day.year - mController.getMinYear()) * MonthAdapter.MONTHS_IN_YEAR + day.month
+            (day.year - mController.getMinYear()) * CustomCalendarMonthAdapter.MONTHS_IN_YEAR + day.month
 
         var child: View?
         var i = 0
@@ -177,7 +177,7 @@ abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
         visibleItemCount: Int,
         totalItemCount: Int
     ) {
-        val child = view.getChildAt(0) as MonthView? ?: return
+        val child = view.getChildAt(0) as CustomCalendarMonthView? ?: return
 
         val currScroll = view.firstVisiblePosition * child.height - child.bottom.toLong()
         mPreviousScrollPosition = currScroll
@@ -273,7 +273,7 @@ abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
         val childCount = childCount
         for (i in 0 until childCount) {
             val child = getChildAt(i)
-            if (child is MonthView) {
+            if (child is CustomCalendarMonthView) {
                 val focus = child.getAccessibilityFocus()
                 if (focus != null) {
                     if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -295,7 +295,7 @@ abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
         val childCount = childCount
         for (i in 0 until childCount) {
             val child = getChildAt(i)
-            if (child is MonthView) {
+            if (child is CustomCalendarMonthView) {
                 if (child.restoreAccessibilityFocus(day)) {
                     return true
                 }
