@@ -1,4 +1,4 @@
-package com.adedom.calendar
+package com.adedom.calendar.customcalendar
 
 import android.content.Context
 import android.graphics.Canvas
@@ -12,13 +12,13 @@ internal class SimpleDayPickerView : DayPickerView {
 
     constructor(
         context: Context?,
-        controller: DatePickerController,
+        controller: CustomCalendarPickerController,
         locale: Locale
     ) : super(context, controller, locale)
 
     override fun createMonthAdapter(
         context: Context?,
-        controller: DatePickerController,
+        controller: CustomCalendarPickerController,
         locale: Locale
     ): MonthAdapter {
         return SimpleMonthAdapter(context, controller, locale)
@@ -27,7 +27,7 @@ internal class SimpleDayPickerView : DayPickerView {
 }
 
 internal class SimpleMonthAdapter(
-    context: Context?, controller: DatePickerController, private val mLocale: Locale
+    context: Context?, controller: CustomCalendarPickerController, private val mLocale: Locale
 ) : MonthAdapter(context, controller) {
 
     override fun createMonthView(context: Context?): MonthView {
@@ -37,7 +37,7 @@ internal class SimpleMonthAdapter(
 }
 
 internal class SimpleMonthView(
-    context: Context?, attr: AttributeSet?, controller: DatePickerController, locale: Locale
+    context: Context?, attr: AttributeSet?, controller: CustomCalendarPickerController, locale: Locale
 ) : MonthView(context, attr, controller, locale) {
 
     override fun drawMonthDay(

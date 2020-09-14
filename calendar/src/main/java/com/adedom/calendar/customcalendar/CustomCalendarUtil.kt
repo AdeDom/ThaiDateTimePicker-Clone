@@ -1,4 +1,4 @@
-package com.adedom.calendar
+package com.adedom.calendar.customcalendar
 
 import android.animation.Keyframe
 import android.animation.ObjectAnimator
@@ -11,12 +11,13 @@ import android.util.TypedValue
 import android.view.View
 import androidx.collection.SimpleArrayMap
 import androidx.core.content.ContextCompat
+import com.adedom.calendar.R
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
-internal object DateUtil {
+internal object CustomCalendarUtil {
 
     private const val BUDDHIST_OFFSET = 543
     private const val PULSE_ANIMATOR_DURATION = 544
@@ -33,27 +34,27 @@ internal object DateUtil {
         val year = SimpleDateFormat(YEAR_FORMAT, locale)
             .format(calendar.time).toInt()
 
-        return if (locale == DatePickerDialog.LOCALE_TH) {
+        return if (locale == CustomCalendarPickerDialog.LOCALE_TH) {
             year.plus(BUDDHIST_OFFSET).toString()
         } else {
             year.toString()
         }
     }
 
-    fun getDatePicker(locale: Locale, calendar: Calendar): DateItem {
+    fun getDatePicker(locale: Locale, calendar: Calendar): CustomCalendarItem {
         val year: Int = calendar[Calendar.YEAR]
         val monthOfYear: Int = calendar[Calendar.MONTH].plus(1)
         val dayOfMonth: Int = calendar[Calendar.DAY_OF_MONTH]
-        return if (locale == DatePickerDialog.LOCALE_TH) {
-            DateItem(year.plus(BUDDHIST_OFFSET), monthOfYear, dayOfMonth)
+        return if (locale == CustomCalendarPickerDialog.LOCALE_TH) {
+            CustomCalendarItem(year.plus(BUDDHIST_OFFSET), monthOfYear, dayOfMonth)
         } else {
-            DateItem(year, monthOfYear, dayOfMonth)
+            CustomCalendarItem(year, monthOfYear, dayOfMonth)
         }
     }
 
     fun getYearList(locale: Locale, minYear: Int, maxYear: Int): MutableList<String> {
         val years = ArrayList<String>()
-        if (locale == DatePickerDialog.LOCALE_TH) {
+        if (locale == CustomCalendarPickerDialog.LOCALE_TH) {
             for (year in minYear.plus(BUDDHIST_OFFSET)..
                     maxYear.plus(BUDDHIST_OFFSET)) {
                 years.add(year.toString())
@@ -68,7 +69,7 @@ internal object DateUtil {
 
     fun getYearFromText(locale: Locale, text: String): Int {
         val year = text.toInt()
-        return if (locale == DatePickerDialog.LOCALE_TH) year.minus(BUDDHIST_OFFSET) else year
+        return if (locale == CustomCalendarPickerDialog.LOCALE_TH) year.minus(BUDDHIST_OFFSET) else year
     }
 
     fun getMonthAndYear(calendar: Calendar?, locale: Locale?): String {
@@ -77,7 +78,7 @@ internal object DateUtil {
 
         val sdfYear = SimpleDateFormat(YEAR_FORMAT, locale)
         var tempYear = sdfYear.format(calendar?.timeInMillis).toInt()
-        val year = if (locale == DatePickerDialog.LOCALE_TH) {
+        val year = if (locale == CustomCalendarPickerDialog.LOCALE_TH) {
             tempYear += BUDDHIST_OFFSET
             tempYear
         } else {
@@ -88,7 +89,7 @@ internal object DateUtil {
 
     fun getDayLabel(calendar: Calendar?, locale: Locale): String {
         val sdf = SimpleDateFormat(DATE_NAME_FORMAT, locale)
-        return if (locale == DatePickerDialog.LOCALE_TH) {
+        return if (locale == CustomCalendarPickerDialog.LOCALE_TH) {
             sdf.format(calendar?.timeInMillis).replace(".", "")
         } else {
             sdf.format(calendar?.timeInMillis).substring(0, 1).toUpperCase(locale)
@@ -96,32 +97,32 @@ internal object DateUtil {
     }
 
     fun getTextOkFromLocale(context: Context, locale: Locale): String {
-        return if (locale == DatePickerDialog.LOCALE_TH) {
-            context.getString(R.string.calendar_ok_th)
+        return if (locale == CustomCalendarPickerDialog.LOCALE_TH) {
+            context.getString(R.string.custom_calendar_ok_th)
         } else {
-            context.getString(R.string.calendar_ok_en)
+            context.getString(R.string.custom_calendar_ok_en)
         }
     }
 
     fun getTextCancelFromLocale(context: Context, locale: Locale): String {
-        return if (locale == DatePickerDialog.LOCALE_TH) {
-            context.getString(R.string.calendar_cancel_th)
+        return if (locale == CustomCalendarPickerDialog.LOCALE_TH) {
+            context.getString(R.string.custom_calendar_cancel_th)
         } else {
-            context.getString(R.string.calendar_cancel_en)
+            context.getString(R.string.custom_calendar_cancel_en)
         }
     }
 
     fun getPeriodDateDiff(
         locale: Locale,
-        initialize: DateItem,
-        selectDate: DateItem,
+        initialize: CustomCalendarItem,
+        selectDate: CustomCalendarItem,
     ): Long {
         val simpleDateFormat = SimpleDateFormat("dd MM yyyy")
         val date1 = "${initialize.dayOfMonth.toPadStart()} " +
                 "${initialize.monthOfYear.plus(1).toPadStart()} " +
                 "${initialize.year}"
 
-        val date2 = if (locale == DatePickerDialog.LOCALE_TH) {
+        val date2 = if (locale == CustomCalendarPickerDialog.LOCALE_TH) {
             "${selectDate.dayOfMonth.toPadStart()} " +
                     "${selectDate.monthOfYear.toPadStart()} " +
                     "${selectDate.year.minus(BUDDHIST_OFFSET)}"
@@ -302,7 +303,7 @@ internal object DateUtil {
             )
         ) {
             typedValue.data
-        } else ContextCompat.getColor(context, R.color.calendar_accent_color)
+        } else ContextCompat.getColor(context, R.color.custom_calendar_accent_color)
     }
 
     operator fun get(c: Context?, name: String?): Typeface? {
@@ -322,7 +323,7 @@ internal object DateUtil {
 
 }
 
-internal data class DateItem(
+internal data class CustomCalendarItem(
     val year: Int,
     val monthOfYear: Int,
     val dayOfMonth: Int,

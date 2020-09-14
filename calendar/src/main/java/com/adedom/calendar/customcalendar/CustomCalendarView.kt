@@ -1,4 +1,4 @@
-package com.adedom.calendar
+package com.adedom.calendar.customcalendar
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,6 +15,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.widget.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import com.adedom.calendar.R
 import java.util.*
 import kotlin.math.min
 
@@ -117,8 +118,8 @@ internal class TextViewWithCircularIndicator(
     }
 
     init {
-        mCircleColor = ContextCompat.getColor(context, R.color.calendar_accent_color)
-        mItemIsSelectedText = context.resources.getString(R.string.calendar_item_is_selected)
+        mCircleColor = ContextCompat.getColor(context, R.color.custom_calendar_accent_color)
+        mItemIsSelectedText = context.resources.getString(R.string.custom_calendar_item_is_selected)
 
         init()
     }
@@ -127,11 +128,11 @@ internal class TextViewWithCircularIndicator(
 
 internal class YearPickerView(
     context: Context,
-    private val mController: DatePickerController,
+    private val mController: CustomCalendarPickerController,
     private val mLocale: Locale,
 ) : ListView(context),
     AdapterView.OnItemClickListener,
-    DatePickerDialog.OnDateChangedListener {
+    CustomCalendarPickerDialog.OnDateChangedListener {
 
     private lateinit var mAdapter: YearAdapter
     private val mViewSize: Int
@@ -139,12 +140,12 @@ internal class YearPickerView(
     private var mSelectedView: TextViewWithCircularIndicator? = null
 
     private fun init(context: Context) {
-        val years = DateUtil.getYearList(
+        val years = CustomCalendarUtil.getYearList(
             mLocale,
             mController.getMinYear(),
             mController.getMaxYear()
         )
-        mAdapter = YearAdapter(context, R.layout.calendar_year, years)
+        mAdapter = YearAdapter(context, R.layout.custom_calendar_year, years)
         adapter = mAdapter
     }
 
@@ -212,7 +213,7 @@ internal class YearPickerView(
     }
 
     private fun getYearFromTextView(view: TextView): Int {
-        return DateUtil.getYearFromText(mLocale, view.text.toString())
+        return CustomCalendarUtil.getYearFromText(mLocale, view.text.toString())
     }
 
     init {
@@ -223,8 +224,8 @@ internal class YearPickerView(
         )
         layoutParams = frame
         val res = context.resources
-        mViewSize = res.getDimensionPixelOffset(R.dimen.calendar_date_picker_view_animator_height)
-        mChildSize = res.getDimensionPixelOffset(R.dimen.calendar_year_label_height)
+        mViewSize = res.getDimensionPixelOffset(R.dimen.custom_calendar_date_picker_view_animator_height)
+        mChildSize = res.getDimensionPixelOffset(R.dimen.custom_calendar_year_label_height)
         isVerticalFadingEdgeEnabled = true
         setFadingEdgeLength(mChildSize / 3)
         init(context)

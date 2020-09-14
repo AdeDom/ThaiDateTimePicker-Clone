@@ -1,17 +1,17 @@
-package com.adedom.calendar
+package com.adedom.calendar.customcalendar
 
-import com.adedom.calendar.MonthAdapter.Companion.CalendarDay
+import com.adedom.calendar.customcalendar.MonthAdapter.Companion.CalendarDay
 import java.util.*
 
-interface DatePickerController {
+interface CustomCalendarPickerController {
 
     fun onYearSelected(year: Int)
 
     fun onDayOfMonthSelected(year: Int, month: Int, day: Int)
 
-    fun registerOnDateChangedListener(listener: DatePickerDialog.OnDateChangedListener)
+    fun registerOnDateChangedListener(listener: CustomCalendarPickerDialog.OnDateChangedListener)
 
-    fun unregisterOnDateChangedListener(listener: DatePickerDialog.OnDateChangedListener)
+    fun unregisterOnDateChangedListener(listener: CustomCalendarPickerDialog.OnDateChangedListener)
 
     fun getSelectedDay(): CalendarDay
 

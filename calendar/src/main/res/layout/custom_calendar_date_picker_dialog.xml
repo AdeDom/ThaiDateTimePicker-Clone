@@ -32,7 +32,7 @@
             android:layout_gravity="center"
             android:gravity="center_horizontal|top"
             android:includeFontPadding="false"
-            android:textColor="@drawable/calendar_date_picker_selector"
+            android:textColor="@drawable/custom_calendar_date_picker_selector"
             android:textSize="25dp"
             tools:text="2015" />
 
@@ -43,7 +43,7 @@
             android:layout_gravity="center"
             android:clickable="true"
             android:orientation="vertical"
-            android:textColor="@drawable/calendar_date_picker_selector">
+            android:textColor="@drawable/custom_calendar_date_picker_selector">
 
             <TextView
                 android:id="@+id/date_picker_month"
@@ -52,7 +52,7 @@
                 android:duplicateParentState="true"
                 android:gravity="center_horizontal|bottom"
                 android:includeFontPadding="false"
-                android:textColor="@drawable/calendar_date_picker_selector"
+                android:textColor="@drawable/custom_calendar_date_picker_selector"
                 android:textSize="25dp"
                 tools:text="May" />
 
@@ -61,7 +61,7 @@
     </LinearLayout>
 
     <!--    body-->
-    <com.adedom.calendar.AccessibleDateAnimator
+    <com.adedom.calendar.customcalendar.AccessibleDateAnimator
         android:id="@+id/animator"
         android:layout_width="270dp"
         android:layout_height="252dp"
@@ -87,7 +87,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/calendar_material_button_background"
+            android:background="@drawable/custom_calendar_material_button_background"
             android:focusable="true"
             android:gravity="center"
             android:minWidth="64dp"
@@ -95,7 +95,7 @@
             android:paddingRight="8dp"
             android:singleLine="true"
             android:stateListAnimator="@null"
-            android:text="@string/calendar_cancel_en"
+            android:text="@string/custom_calendar_cancel_en"
             android:textAllCaps="true"
             android:textColor="#009688"
             android:textSize="14sp" />
@@ -107,7 +107,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/calendar_material_button_background"
+            android:background="@drawable/custom_calendar_material_button_background"
             android:focusable="true"
             android:gravity="center"
             android:minWidth="64dp"
@@ -115,7 +115,7 @@
             android:paddingRight="8dp"
             android:singleLine="true"
             android:stateListAnimator="@null"
-            android:text="@string/calendar_ok_en"
+            android:text="@string/custom_calendar_ok_en"
             android:textAllCaps="true"
             android:textColor="#009688"
             android:textSize="14sp" />

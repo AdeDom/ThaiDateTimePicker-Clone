@@ -1,4 +1,4 @@
-package com.adedom.calendar
+package com.adedom.calendar.customcalendar
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,15 +13,15 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.AbsListView
 import android.widget.ListView
-import com.adedom.calendar.DateUtil.tryAccessibilityAnnounce
-import com.adedom.calendar.MonthAdapter.Companion.CalendarDay
+import com.adedom.calendar.customcalendar.CustomCalendarUtil.tryAccessibilityAnnounce
+import com.adedom.calendar.customcalendar.MonthAdapter.Companion.CalendarDay
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
 abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
-    DatePickerDialog.OnDateChangedListener {
+    CustomCalendarPickerDialog.OnDateChangedListener {
 
     protected var mNumWeeks = 6
     protected var mShowWeekNumber = false
@@ -48,7 +48,7 @@ abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
 
     protected var mCurrentScrollState = OnScrollListener.SCROLL_STATE_IDLE
 
-    private lateinit var mController: DatePickerController
+    private lateinit var mController: CustomCalendarPickerController
     private lateinit var mLocale: Locale
     private var mPerformingScroll = false
 
@@ -57,13 +57,13 @@ abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
     }
 
     internal constructor(
-        context: Context?, controller: DatePickerController, locale: Locale
+        context: Context?, controller: CustomCalendarPickerController, locale: Locale
     ) : super(context) {
         init(context)
         setController(controller, locale)
     }
 
-    internal fun setController(controller: DatePickerController, locale: Locale) {
+    internal fun setController(controller: CustomCalendarPickerController, locale: Locale) {
         mController = controller
         mLocale = locale
         mController.registerOnDateChangedListener(this)
@@ -95,7 +95,7 @@ abstract class DayPickerView : ListView, AbsListView.OnScrollListener,
 
     internal abstract fun createMonthAdapter(
         context: Context?,
-        controller: DatePickerController,
+        controller: CustomCalendarPickerController,
         locale: Locale,
     ): MonthAdapter
 

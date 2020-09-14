@@ -1,4 +1,4 @@
-package com.adedom.calendar
+package com.adedom.calendar.customcalendar
 
 import android.animation.ObjectAnimator
 import android.app.Activity
@@ -14,14 +14,20 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.adedom.calendar.MonthAdapter.Companion.CalendarDay
+import com.adedom.calendar.customcalendar.MonthAdapter.Companion.CalendarDay
+import com.adedom.calendar.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DatePickerDialog : DialogFragment(), DatePickerController {
+/**
+ * Template calendar
+ * https://github.com/layerlre/ThaiDateTimePicker/tree/version_2
+ */
+
+class CustomCalendarPickerDialog : DialogFragment(), CustomCalendarPickerController {
 
     private val mCalendar = Calendar.getInstance()
-    private lateinit var mInitializeDate: DateItem
+    private lateinit var mInitializeDate: CustomCalendarItem
     private lateinit var mCallBack: OnDateSetListener
     private var mLocale: Locale = LOCALE_EN
     private val mListeners = HashSet<OnDateChangedListener>()
@@ -72,7 +78,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         mCalendar.set(Calendar.YEAR, year)
         mCalendar.set(Calendar.MONTH, monthOfYear)
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        mInitializeDate = DateItem(year, monthOfYear, dayOfMonth)
+        mInitializeDate = CustomCalendarItem(year, monthOfYear, dayOfMonth)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +95,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     ): View? {
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
-        val view: View = inflater.inflate(R.layout.calendar_date_picker_dialog, container)
+        val view: View = inflater.inflate(R.layout.custom_calendar_date_picker_dialog, container)
 
         mTvFullDate = view.findViewById<TextView>(R.id.tv_full_date).apply {
             visibility = if (mIsFullDateVisibility) View.VISIBLE else View.GONE
@@ -110,18 +116,18 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
             mYearPickerView = YearPickerView(it, this, mLocale)
 
             if (mAccentColor == -1) {
-                mAccentColor = DateUtil.getAccentColorFromThemeIfAvailable(it)
+                mAccentColor = CustomCalendarUtil.getAccentColorFromThemeIfAvailable(it)
             }
 
-            val bgColorResource: Int = R.color.calendar_date_picker_view_animator
+            val bgColorResource: Int = R.color.custom_calendar_date_picker_view_animator
             val color = ContextCompat.getColor(it, bgColorResource)
             view.setBackgroundColor(color)
         }
 
-        mDayPickerDescription = resources.getString(R.string.calendar_day_picker_description)
-        mSelectDay = resources.getString(R.string.calendar_select_day)
-        mYearPickerDescription = resources.getString(R.string.calendar_year_picker_description)
-        mSelectYear = resources.getString(R.string.calendar_select_year)
+        mDayPickerDescription = resources.getString(R.string.custom_calendar_day_picker_description)
+        mSelectDay = resources.getString(R.string.custom_calendar_select_day)
+        mYearPickerDescription = resources.getString(R.string.custom_calendar_year_picker_description)
+        mSelectYear = resources.getString(R.string.custom_calendar_select_year)
 
         mAnimator = view.findViewById<AccessibleDateAnimator>(R.id.animator).apply {
             addView(mDayPickerView)
@@ -139,31 +145,31 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
         view.findViewById<Button>(R.id.ok).apply {
             setOnClickListener {
-                val selectDate = DateUtil.getDatePicker(mLocale, mCalendar)
+                val selectDate = CustomCalendarUtil.getDatePicker(mLocale, mCalendar)
                 mCallBack.onDateSet(selectDate.year, selectDate.monthOfYear, selectDate.dayOfMonth)
 
-                val initialize = DateItem(
+                val initialize = CustomCalendarItem(
                     mInitializeDate.year,
                     mInitializeDate.monthOfYear,
                     mInitializeDate.dayOfMonth
                 )
-                val dateDiff = DateUtil.getPeriodDateDiff(mLocale, initialize, selectDate)
+                val dateDiff = CustomCalendarUtil.getPeriodDateDiff(mLocale, initialize, selectDate)
                 mCallBack.onPeriodDate(dateDiff)
 
                 dismiss()
             }
-            typeface = DateUtil[activity, "Roboto-Medium"]
+            typeface = CustomCalendarUtil[activity, "Roboto-Medium"]
             setTextColor(mAccentColor)
-            text = DateUtil.getTextOkFromLocale(context, mLocale)
+            text = CustomCalendarUtil.getTextOkFromLocale(context, mLocale)
         }
 
         view.findViewById<Button>(R.id.cancel).apply {
             setOnClickListener {
                 dialog?.cancel()
             }
-            typeface = DateUtil[activity, "Roboto-Medium"]
+            typeface = CustomCalendarUtil[activity, "Roboto-Medium"]
             setTextColor(mAccentColor)
-            text = DateUtil.getTextCancelFromLocale(context, mLocale)
+            text = CustomCalendarUtil.getTextCancelFromLocale(context, mLocale)
         }
 
         view.findViewById<LinearLayout>(R.id.day_picker_selected_date_layout).apply {
@@ -182,7 +188,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         val pulseAnimator: ObjectAnimator
         when (viewIndex) {
             MONTH_AND_DAY_VIEW -> {
-                pulseAnimator = DateUtil.getPulseAnimator(mMonthAndDayView, 0.9f, 1.05f)
+                pulseAnimator = CustomCalendarUtil.getPulseAnimator(mMonthAndDayView, 0.9f, 1.05f)
                 if (mDelayAnimation) {
                     pulseAnimator.startDelay = ANIMATION_DELAY
                     mDelayAnimation = false
@@ -199,10 +205,10 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
                 val flags = DateUtils.FORMAT_SHOW_DATE
                 val dayString = DateUtils.formatDateTime(activity, millis, flags)
                 mAnimator.contentDescription = "$mDayPickerDescription: $dayString"
-                DateUtil.tryAccessibilityAnnounce(mAnimator, mSelectDay)
+                CustomCalendarUtil.tryAccessibilityAnnounce(mAnimator, mSelectDay)
             }
             YEAR_VIEW -> {
-                pulseAnimator = DateUtil.getPulseAnimator(mYearView, 0.85f, 1.1f)
+                pulseAnimator = CustomCalendarUtil.getPulseAnimator(mYearView, 0.85f, 1.1f)
                 if (mDelayAnimation) {
                     pulseAnimator.startDelay = ANIMATION_DELAY
                     mDelayAnimation = false
@@ -217,20 +223,20 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
                 pulseAnimator.start()
 
                 val yearString: CharSequence =
-                    SimpleDateFormat(DateUtil.YEAR_FORMAT, mLocale).format(millis)
+                    SimpleDateFormat(CustomCalendarUtil.YEAR_FORMAT, mLocale).format(millis)
                 mAnimator.contentDescription = "$mYearPickerDescription: $yearString"
-                DateUtil.tryAccessibilityAnnounce(mAnimator, mSelectYear)
+                CustomCalendarUtil.tryAccessibilityAnnounce(mAnimator, mSelectYear)
             }
         }
     }
 
     private fun updateDisplay(announce: Boolean) {
-        val fullDate = SimpleDateFormat(DateUtil.FULL_DATE_FORMAT, mLocale).format(mCalendar.time)
-            .replace(".", "") + DateUtil.getLocaleYear(mLocale, mCalendar)
+        val fullDate = SimpleDateFormat(CustomCalendarUtil.FULL_DATE_FORMAT, mLocale).format(mCalendar.time)
+            .replace(".", "") + CustomCalendarUtil.getLocaleYear(mLocale, mCalendar)
         mTvFullDate.text = fullDate
         mSelectedMonthTextView.text =
-            SimpleDateFormat(DateUtil.MONTH_FORMAT, mLocale).format(mCalendar.time)
-        mYearView.text = DateUtil.getLocaleYear(mLocale, mCalendar)
+            SimpleDateFormat(CustomCalendarUtil.MONTH_FORMAT, mLocale).format(mCalendar.time)
+        mYearView.text = CustomCalendarUtil.getLocaleYear(mLocale, mCalendar)
 
         // Accessibility.
         val millis = mCalendar.timeInMillis
@@ -242,7 +248,7 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
         if (announce) {
             flags = DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR
             val fullDateText = DateUtils.formatDateTime(activity, millis, flags)
-            DateUtil.tryAccessibilityAnnounce(mAnimator, fullDateText)
+            CustomCalendarUtil.tryAccessibilityAnnounce(mAnimator, fullDateText)
         }
     }
 
@@ -281,9 +287,9 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
     override fun onYearSelected(year: Int) {
         mCalendar[Calendar.YEAR] = year
 
-        DateUtil.adjustDayInMonthIfNeeded(mCalendar)
+        CustomCalendarUtil.adjustDayInMonthIfNeeded(mCalendar)
         if (mMinDate != null && mMaxDate != null)
-            DateUtil.setToNearestDate(selectableDays, mMinDate!!, mMaxDate!!, mCalendar)
+            CustomCalendarUtil.setToNearestDate(selectableDays, mMinDate!!, mMaxDate!!, mCalendar)
         for (listener in mListeners) listener.onDateChanged()
 
         setCurrentView(MONTH_AND_DAY_VIEW)
@@ -312,12 +318,12 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
 
     override fun isOutOfRange(year: Int, month: Int, day: Int): Boolean {
         if (selectableDays != null) {
-            return !DateUtil.isSelectable(selectableDays, year, month, day)
+            return !CustomCalendarUtil.isSelectable(selectableDays, year, month, day)
         }
 
-        if (DateUtil.isBeforeMin(mMinDate, year, month, day)) {
+        if (CustomCalendarUtil.isBeforeMin(mMinDate, year, month, day)) {
             return true
-        } else if (DateUtil.isAfterMax(mMaxDate, year, month, day)) {
+        } else if (CustomCalendarUtil.isAfterMax(mMaxDate, year, month, day)) {
             return true
         }
 
@@ -353,8 +359,8 @@ class DatePickerDialog : DialogFragment(), DatePickerController {
             year: Int,
             monthOfYear: Int,
             dayOfMonth: Int,
-        ): DatePickerDialog {
-            val ret = DatePickerDialog()
+        ): CustomCalendarPickerDialog {
+            val ret = CustomCalendarPickerDialog()
             ret.initialize(callback, year, monthOfYear, dayOfMonth)
             return ret
         }

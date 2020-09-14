@@ -1,4 +1,4 @@
-package com.adedom.calendar
+package com.adedom.calendar.customcalendar
 
 import android.content.Context
 import android.graphics.Canvas
@@ -17,15 +17,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.customview.widget.ExploreByTouchHelper
-import com.adedom.calendar.DateUtil.getDayLabel
-import com.adedom.calendar.DateUtil.getMonthAndYear
-import com.adedom.calendar.MonthAdapter.Companion.CalendarDay
+import com.adedom.calendar.R
+import com.adedom.calendar.customcalendar.CustomCalendarUtil.getDayLabel
+import com.adedom.calendar.customcalendar.CustomCalendarUtil.getMonthAndYear
+import com.adedom.calendar.customcalendar.MonthAdapter.Companion.CalendarDay
 import java.security.InvalidParameterException
 import java.util.*
 
 abstract class MonthView : View {
 
-    protected var mController: DatePickerController
+    protected var mController: CustomCalendarPickerController
     private var mLocale: Locale
 
     protected var mEdgePadding = 0
@@ -78,7 +79,7 @@ abstract class MonthView : View {
     constructor(
         context: Context?,
         attr: AttributeSet?,
-        controller: DatePickerController,
+        controller: CustomCalendarPickerController,
         locale: Locale,
     ) : super(context, attr) {
         mLocale = locale
@@ -89,34 +90,34 @@ abstract class MonthView : View {
         mDayLabelCalendar = Calendar.getInstance()
         mCalendar = Calendar.getInstance()
 
-        mDayOfWeekTypeface = res?.getString(R.string.calendar_day_of_week_label_typeface)
-        mMonthTitleTypeface = res?.getString(R.string.calendar_sans_serif)
+        mDayOfWeekTypeface = res?.getString(R.string.custom_calendar_day_of_week_label_typeface)
+        mMonthTitleTypeface = res?.getString(R.string.custom_calendar_sans_serif)
 
         context?.let {
-            mDayTextColor = ContextCompat.getColor(it, R.color.calendar_date_picker_text_normal)
-            mMonthDayTextColor = ContextCompat.getColor(it, R.color.calendar_date_picker_month_day)
+            mDayTextColor = ContextCompat.getColor(it, R.color.custom_calendar_date_picker_text_normal)
+            mMonthDayTextColor = ContextCompat.getColor(it, R.color.custom_calendar_date_picker_month_day)
             mDisabledDayTextColor =
-                ContextCompat.getColor(it, R.color.calendar_date_picker_text_disabled)
+                ContextCompat.getColor(it, R.color.custom_calendar_date_picker_text_disabled)
             mHighlightedDayTextColor =
-                ContextCompat.getColor(it, R.color.calendar_date_picker_text_highlighted)
+                ContextCompat.getColor(it, R.color.custom_calendar_date_picker_text_highlighted)
 
-            mSelectedDayTextColor = ContextCompat.getColor(it, R.color.calendar_white)
+            mSelectedDayTextColor = ContextCompat.getColor(it, R.color.custom_calendar_white)
             mTodayNumberColor = mController.getAccentColor()
-            mMonthTitleColor = ContextCompat.getColor(it, R.color.calendar_white)
+            mMonthTitleColor = ContextCompat.getColor(it, R.color.custom_calendar_white)
         }
 
         context?.resources?.let {
-            MINI_DAY_NUMBER_TEXT_SIZE = it.getDimensionPixelSize(R.dimen.calendar_day_number_size)
-            MONTH_LABEL_TEXT_SIZE = it.getDimensionPixelSize(R.dimen.calendar_month_label_size)
+            MINI_DAY_NUMBER_TEXT_SIZE = it.getDimensionPixelSize(R.dimen.custom_calendar_day_number_size)
+            MONTH_LABEL_TEXT_SIZE = it.getDimensionPixelSize(R.dimen.custom_calendar_month_label_size)
             MONTH_DAY_LABEL_TEXT_SIZE =
-                it.getDimensionPixelSize(R.dimen.calendar_month_day_label_text_size)
+                it.getDimensionPixelSize(R.dimen.custom_calendar_month_day_label_text_size)
             MONTH_HEADER_SIZE =
-                it.getDimensionPixelOffset(R.dimen.calendar_month_list_item_header_height)
+                it.getDimensionPixelOffset(R.dimen.custom_calendar_month_list_item_header_height)
             DAY_SELECTED_CIRCLE_SIZE =
-                it.getDimensionPixelSize(R.dimen.calendar_day_number_select_circle_radius)
+                it.getDimensionPixelSize(R.dimen.custom_calendar_day_number_select_circle_radius)
 
             mRowHeight =
-                (it.getDimensionPixelOffset(R.dimen.calendar_date_picker_view_animator_height) - getMonthHeaderSize()) / MAX_NUM_ROWS
+                (it.getDimensionPixelOffset(R.dimen.custom_calendar_date_picker_view_animator_height) - getMonthHeaderSize()) / MAX_NUM_ROWS
         }
 
         mStringBuilder = StringBuilder(50)
@@ -130,7 +131,7 @@ abstract class MonthView : View {
         initView()
     }
 
-    fun setDatePickerController(controller: DatePickerController) {
+    fun setDatePickerController(controller: CustomCalendarPickerController) {
         mController = controller
     }
 
@@ -188,7 +189,7 @@ abstract class MonthView : View {
         mMonthDayLabelPaint.isAntiAlias = true
         mMonthDayLabelPaint.textSize = MONTH_DAY_LABEL_TEXT_SIZE.toFloat()
         mMonthDayLabelPaint.color = mMonthDayTextColor
-        mMonthDayLabelPaint.typeface = DateUtil[context, "Roboto-Medium"]
+        mMonthDayLabelPaint.typeface = CustomCalendarUtil[context, "Roboto-Medium"]
         mMonthDayLabelPaint.style = Paint.Style.FILL
         mMonthDayLabelPaint.textAlign = Align.CENTER
         mMonthDayLabelPaint.isFakeBoldText = true
@@ -530,7 +531,7 @@ abstract class MonthView : View {
             val date = DateFormat.format(DATE_FORMAT, mTempCalendar.timeInMillis)
 
             return if (day == mSelectedDay) {
-                context.getString(R.string.calendar_item_is_selected, date)
+                context.getString(R.string.custom_calendar_item_is_selected, date)
             } else date
         }
 

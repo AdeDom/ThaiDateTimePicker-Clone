@@ -3,61 +3,61 @@ package com.adedom.thaidatetimepicker_clone
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.adedom.calendar.DatePickerDialog
-import com.adedom.calendar.datePickerDialog
+import com.adedom.calendar.customcalendar.CustomCalendarPickerDialog
+import com.adedom.calendar.customcalendar.customCalendarPickerDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+class MainActivity : AppCompatActivity(), CustomCalendarPickerDialog.OnDateSetListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         btAnnoDomini.setOnClickListener {
-            datePickerDialog(
+            customCalendarPickerDialog(
                 this,
-                locale = DatePickerDialog.LOCALE_EN,
+                locale = CustomCalendarPickerDialog.LOCALE_EN,
             )
         }
 
         btBuddhistEra.setOnClickListener {
-            datePickerDialog(
+            customCalendarPickerDialog(
                 this,
-                locale = DatePickerDialog.LOCALE_TH,
+                locale = CustomCalendarPickerDialog.LOCALE_TH,
             )
         }
 
         btAccentColor.setOnClickListener {
-            datePickerDialog(
+            customCalendarPickerDialog(
                 this,
                 accentColor = Color.parseColor("#03DAC5"),
             )
         }
 
         btMinDate.setOnClickListener {
-            datePickerDialog(
+            customCalendarPickerDialog(
                 this,
                 minDate = Calendar.getInstance()
             )
         }
 
         btMaxDate.setOnClickListener {
-            datePickerDialog(
+            customCalendarPickerDialog(
                 this,
                 maxDate = Calendar.getInstance()
             )
         }
 
         btHideTitleLabelFullDate.setOnClickListener {
-            datePickerDialog(
+            customCalendarPickerDialog(
                 this,
                 isTitleLabelFullDate = false,
             )
         }
 
         btGoDateStartIntern.setOnClickListener {
-            datePickerDialog(
+            customCalendarPickerDialog(
                 this,
                 year = 2020,
                 monthOfYear = 2,

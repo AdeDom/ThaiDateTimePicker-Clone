@@ -1,4 +1,4 @@
-package com.adedom.calendar
+package com.adedom.calendar.customcalendar
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,7 +10,7 @@ import java.util.*
 
 abstract class MonthAdapter(
     private val mContext: Context?,
-    protected val mController: DatePickerController
+    protected val mController: CustomCalendarPickerController
 ) : BaseAdapter(), MonthView.OnDayClickListener {
 
     private lateinit var mSelectedDay: CalendarDay

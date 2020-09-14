@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="calendar_white">#ffffff</color>
-    <color name="calendar_accent_color">#009688</color>
-    <color name="calendar_date_picker_text_normal">#ff212121</color>
-    <color name="calendar_date_picker_text_highlighted">#ff212121</color>
-    <color name="calendar_date_picker_text_disabled">#ccc</color>
-    <color name="calendar_date_picker_month_day">#767676</color>
-    <color name="calendar_date_picker_view_animator">@android:color/white</color>
+    <color name="custom_calendar_white">#ffffff</color>
+    <color name="custom_calendar_accent_color">#009688</color>
+    <color name="custom_calendar_date_picker_text_normal">#ff212121</color>
+    <color name="custom_calendar_date_picker_text_highlighted">#ff212121</color>
+    <color name="custom_calendar_date_picker_text_disabled">#ccc</color>
+    <color name="custom_calendar_date_picker_month_day">#767676</color>
+    <color name="custom_calendar_date_picker_view_animator">@android:color/white</color>
 
 </resources>
